@@ -1,0 +1,101 @@
+<!-- Add Unity Modal -->
+<div class="modal fade" id="addUnityModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="addUnityForm" method="POST" action="{% url 'unity_add' %}">
+                {% csrf_token %}
+                <div class="modal-header bg-success d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="text-light">إضافة وحدة جديدة</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    {{ form.as_p }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-success">إضافة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Unity Modal -->
+<div class="modal fade" id="editUnityModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editUnityForm" method="POST">
+                {% csrf_token %}
+                <div class="modal-header bg-warning d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="text-light">تعديل الوحدة</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editUnityId" name="id">
+                    <div class="form-group">
+                        <label for="editUnityName">اسم الوحدة</label>
+                        <input type="text" id="editUnityName" name="name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="editUnityCode">الرمز</label>
+                        <input type="text" id="editUnityCode" name="code" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="editUnityPedagogicYear">السنة البيداغوجية</label>
+                        <select id="editUnityPedagogicYear" name="pedagogicyear" class="form-control">
+                            {% for pedagogic_year in pedagogic_years %}
+                            <option value="{{ pedagogic_year.id }}">{{ pedagogic_year.year }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editUnitySpeciality">التخصص</label>
+                        <select id="editUnitySpeciality" name="speciality" class="form-control">
+                            {% for speciality in specialities %}
+                            <option value="{{ speciality.id }}">{{ speciality.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-warning">تحديث</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Unity Modal -->
+<div class="modal fade" id="deleteUnityModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="deleteUnityForm" method="POST">
+                {% csrf_token %}
+                <div class="modal-header bg-danger d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-dark" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="text-light">حذف الوحدة</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <p>هل أنت متأكد أنك تريد حذف هذه الوحدة؟</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-danger">حذف</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

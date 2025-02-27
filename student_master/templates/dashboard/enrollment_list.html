@@ -1,0 +1,283 @@
+{% extends 'attendance/dashboard.html' %}
+{% load static %}
+
+{% block dashboard_content %}
+<div class="d-flex justify-content-between align-items-center p-3 mb-5 mt-1 border-bottom">
+    <h3>إدارة التسجيــلات</h3>
+    <button type="button" class="btn btn-success ml-2" data-toggle="modal" data-target="#addEnrollmentModal">
+        <i class="fas fa-plus"></i> إضافة تسجيل جديد
+    </button>
+</div>
+
+<form id="filterForm" method="GET" class="d-flex justify-content-between mb-3 mx-2">
+    {% csrf_token %}
+    <div class="form-group ms-2" style="width: 28%;">
+        <select name="speciality" id="specialitySelect" class="form-control">
+            <option value="">التخصص</option>
+            {% for speciality in specialities %}
+            <option value="{{ speciality.id }}" {% if request.GET.speciality == speciality.id|stringformat:"s" %}selected{% endif %}>
+                {{ speciality }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group ms-2" style="width: 28%;">
+        <select name="pedagogicyear" id="pedagogicyearSelect" class="form-control">
+            <option value="">السنة البيداغوجية</option>
+            {% for year in pedagogic_years %}
+            <option value="{{ year.year_name }}" {% if request.GET.pedagogicyear == year %}selected{% endif %}>
+                {{ year.year_name }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group ms-2" style="width: 28%;">
+        <select name="year_academic" id="academicyearSelect" class="form-control">
+            <option value="">السنة الأكادمية</option>
+            {% for year in academic_years %}
+            <option value="{{ year }}" {% if request.GET.year_academic == year %}selected{% endif %}>
+                {{ year }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group ms-2">
+        <button type="submit" class="btn btn-light" title="تصفية بيانات الجدول">
+            <i class="fas fa-filter"></i>
+        </button>
+    </div>
+    <div class="form-group">
+        <button type="button" class="btn btn-light" title="استيراد البيانات من ملف">
+            <i class="fas fa-file-import fs-6"></i>
+        </button>
+    </div>
+</form>
+<div class="table-responsive" style="font-size: 0.8rem;">
+<table id="enrollmentTable" class="table table-striped table-bordered dt-responsive nowrap">
+    <thead class="text-right bg-dark">
+        <tr>
+            <th class="text-light fw-bold">رقم التسجيل</th>
+            <th class="text-light fw-bold">الطالب</th>
+            <th class="text-light fw-bold">التخصص</th>
+            <th class="text-light fw-bold">السنة البيداغوجية</th>
+            <th class="text-light fw-bold">السنة الأكاديمية</th>
+            <th class="text-light fw-bold">تاريخ التسجيل</th>
+            <th class="text-light fw-bold">الإجراءات</th>
+        </tr>
+    </thead>
+    <tbody id="enrollmentTableBody">
+        {% for enrollment in enrollments %}
+        {% include 'dashboard/partials/enrollment_row.html' %}
+        {% empty %}
+        <tr>
+            <td colspan="7" class="text-center">لا توجد بيانات</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% include 'dashboard/modals/enrollment_modals.html' %}
+
+<script>
+$(document).ready(function () {
+    // Initialize DataTable
+    const enrollmentTable = $('#enrollmentTable').DataTable({
+        responsive: true,
+        language: {
+            url: "https://cdn.datatables.net/plug-ins/1.13.5/i18n/ar.json",
+        },
+    });
+
+    // Function to refresh the enrollment list
+    function refreshEnrollmentList() {
+        $.ajax({
+            url: "{% url 'enrollment_list' %}",
+            type: "GET",
+            success: function (response) {
+                $('#enrollmentTableBody').html($(response).find('#enrollmentTableBody').html());
+                enrollmentTable.destroy(); // Destroy and reinitialize the DataTable
+                $('#enrollmentTable').DataTable({
+                    responsive: true,
+                    language: {
+                        url: "https://cdn.datatables.net/plug-ins/1.13.5/i18n/ar.json",
+                    },
+                });
+            },
+            error: function () {
+                alert("خطأ أثناء تحديث قائمة التسجيلات.");
+            },
+        });
+    }
+
+    function getCSRFToken() {
+        return document.querySelector('[name=csrfmiddlewaretoken]').value;
+    }
+    
+    $.ajaxSetup({
+        headers: { "X-CSRFToken": getCSRFToken() }
+    });
+    
+    // Add Enrollment Form Submission
+    $('#addEnrollmentForm').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            success: function (response) {
+                $('#addEnrollmentModal').modal('hide');
+                refreshEnrollmentList();
+            },
+            error: function () {
+                alert("حدث خطأ أثناء إضافة التسجيل.");
+            },
+        });
+    });
+
+ // Edit Enrollment Modal
+ $(document).on('click', '.edit-enrollment-btn', function () {
+    const id = $(this).data('id');
+    const matricule = $(this).data('matricule');
+    const studentId = $(this).data('student');
+    const specialityId = $(this).data('speciality');
+    const pedagogicYearId = $(this).data('pedagogic-year');
+    const academicYear = $(this).data('academic-year');
+
+    // Populate the form fields
+    $('#editEnrollmentId').val(id);
+    $('#editEnrollmentMatricule').val(matricule);
+
+    $('#editEnrollmentAcademicYear').val(academicYear); // Set the academic year input
+
+    // Set the selected student
+    $('#editEnrollmentStudent').val(studentId);
+   
+    // Set the selected speciality
+    $('#editEnrollmentSpeciality').val(specialityId);
+   
+    // Set the selected pedagogic year
+    $('#editEnrollmentPedagogicYear').val(pedagogicYearId);
+
+    // Set the form action URL
+    $('#editEnrollmentForm').attr('action', `/enrollments/edit/${id}/`);
+});
+
+
+// Edit Enrollment Form Submission
+$('#editEnrollmentForm').on('submit', function (e) {
+    e.preventDefault();
+    const form = $(this);
+
+    // Log the serialized form data
+    console.log("Form Data:", form.serialize());
+
+    $.ajax({
+        type: 'POST',
+        url: form.attr('action'),
+        data: form.serialize(),
+        success: function (response) {
+            if (response.enrollment_id) {
+                $('#editEnrollmentModal').modal('hide');
+                refreshEnrollmentList();
+            } else if (response.error) {
+                console.error("Validation Errors:", response.error);
+                alert("حدث خطأ أثناء تحديث التسجيل.");
+            } else {
+                console.error("Unexpected response format:", response);
+                alert("حدث خطأ أثناء تحديث التسجيل.");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("AJAX Error:", status, error, xhr.responseText);
+            alert("حدث خطأ أثناء تحديث التسجيل.");
+        }
+    });
+});
+
+   // Delete enrollment Modal
+   $(document).on('click', '.delete-enrollment-btn', function () {
+    const id = $(this).data('id');
+    $('#deleteEnrollmentForm').attr('action', `/enrollments/delete/${id}/`);
+});
+
+// Delete enrollment
+$('#deleteEnrollmentForm').on('submit', function (e) {
+    e.preventDefault();
+    $.ajax({
+        type: 'POST',
+        url: $(this).attr('action'),
+        success: function (response) {
+            $('#deleteEnrollmentModal').modal('hide');
+            $(`#enrollment-${response.enrollment_id}`).remove();
+        },
+        error: function () {
+            alert("حدث خطأ أثناء حذف التسجيل.");
+        },
+    });
+});
+
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('.badge-issue-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const enrollmentId = this.getAttribute('data-enrollment-id');
+            const buttonElement = this;
+
+            Swal.fire({
+                title: 'هل أنت متأكد؟',
+                text: "سيتم تسليم البطاقة ولن تتمكن من تسليمها مرة أخرى إلا بإذن مدير المنصة!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'نعم، تأكيد',
+                cancelButtonText: 'إلغاء'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/enrollments/issue_badge/${enrollmentId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getCSRFToken(),
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            Swal.fire('تمت العملية!', data.message, 'success');
+
+                            // Update button state: Disable & change text
+                            buttonElement.textContent = "البطاقة سحبت";
+                            buttonElement.disabled = true;
+                            buttonElement.classList.remove("text-success");
+                            buttonElement.classList.add("text-muted");
+                        } else {
+                            Swal.fire('خطأ!', data.message, 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        Swal.fire('خطأ!', 'حدث خطأ أثناء الاتصال بالخادم.', 'error');
+                    });
+                }
+            });
+        });
+    });
+});
+
+// Function to get CSRF token from cookies
+function getCSRFToken() {
+    let csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+    return csrfToken ? csrfToken.value : '';
+}
+
+
+</script>
+
+<!-- SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{% endblock %}

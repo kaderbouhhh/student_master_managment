@@ -1,0 +1,224 @@
+{% extends 'attendance/dashboard.html' %}
+
+
+{% block dashboard_content %}
+
+
+<div class="d-flex justify-content-between align-items-center p-3 mb-5 mt-1 border-bottom">
+    <h3>إدارة المذكــرات</h3>
+    <button type="button" class="btn btn-success ml-2" data-toggle="modal" data-target="#addMemoireModal">
+        <i class="fas fa-plus"></i> إضافة مذكرة جديدة
+    </button>
+</div>
+<form id="filterForm" method="GET" class="d-flex justify-content-between mb-3 mx-2">
+    {% csrf_token %}
+    <div class="form-group ms-2" style="width: 45%;">
+        <select name="speciality" id="specialitySelect" class="form-control">
+            <option value="">التخصص</option>
+            {% for speciality in specialities %}
+            <option value="{{ speciality.id }}" {% if request.GET.speciality == speciality.id|stringformat:"s" %}selected{% endif %}>
+                {{ speciality }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group ms-2" style="width: 43%;">
+        <select name="year_academic" id="academicyearSelect" class="form-control">
+            <option value="">السنة الأكادمية</option>
+            {% for year in academic_years %}
+            <option value="{{ year }}" {% if request.GET.year_academic == year %}selected{% endif %}>
+                {{ year }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group ms-2">
+        <button type="submit" class="btn btn-light" title="تصفية بيانات الجدول">
+            <i class="fas fa-filter"></i>
+        </button>
+    </div>
+    <div class="form-group">
+        <button type="" class="btn btn-light" title="استيراد البيانات من ملف">
+            <i class="fas fa-file-import fs-6"></i>
+        </button>
+    </div>
+</form>
+<div class="table-responsive" style="font-size: 0.8rem;">
+    <table id="memoireTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+    <thead class="text-right bg-dark">
+        <tr>
+            <th class="text-center text-light fw-bold">التخصص</th>
+            <th class="text-center text-light fw-bold">الطالب</th>
+            <th class="text-center text-light fw-bold">المعامل</th>
+            <th class="text-center text-light fw-bold">الرصيد</th>
+            <th class="text-center text-light fw-bold">العلامة</th>
+            <th class="text-center text-light fw-bold">الدورة</th>
+            <th class="text-center text-light fw-bold">الإجراءات</th>
+        </tr>
+    </thead>
+    <tbody id="memoireTableBody">
+        {% for memoire in memoires %}
+        {% include 'dashboard/partials/memoire_row.html' %}
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% include 'dashboard/modals/memoire_modals.html' %}
+<script>
+    $(document).ready(function () {
+
+            // Initialize DataTable
+            const memoireTable = $('#memoireTable').DataTable({
+                responsive: true,
+                language: {
+                    url: "https://cdn.datatables.net/plug-ins/1.13.5/i18n/ar.json",
+                },
+            });
+        // Set up CSRF token for AJAX
+        $.ajaxSetup({
+            headers: { "X-CSRFToken": $("input[name=csrfmiddlewaretoken]").val() }
+        });
+    
+        /**
+         * Add Memoire
+         */
+         $("#addMemoireForm").submit(function (e) {
+            e.preventDefault();  // Prevent default form submission
+            
+            var formData = new FormData(this);  // Use FormData to handle file uploads
+    
+            $.ajax({
+                type: "POST",
+                url: $(this).attr("action"),
+                data: formData,
+                processData: false,  // Prevent jQuery from processing data
+                contentType: false,  // Prevent jQuery from setting content-type
+                success: function (response) {
+                    if (response.success) {
+                        $("#addMemoireModal").modal("hide");
+                        $("#memoireTable tbody").append(response.new_row);  // Append new row dynamically
+                        alert("تمت إضافة المذكرة بنجاح!");
+                    } else {
+                        alert("خطأ! الرجاء التحقق من صحة البيانات.");
+                    }
+                },
+                error: function () {
+                    alert("حدث خطأ أثناء الإرسال.");
+                },
+            });
+        });
+
+        // Open the upload modal and set memoire ID
+    $(".upload-memoire-file-btn").click(function () {
+        let memoireId = $(this).data("id");
+        $("#memoireIdInput").val(memoireId);
+    });
+
+    // Handle file upload
+    $("#uploadMemoireFileForm").submit(function (e) {
+        e.preventDefault();
+
+        let formData = new FormData(this);
+
+        $.ajax({
+            type: "POST",
+            url: $(this).attr("action"),
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response.success) {
+                    // Close modal
+                    $("#uploadMemoireFileModal").modal("hide");
+
+                    // Update the row with the new file link
+                    let memoireId = $("#memoireIdInput").val();
+                    let fileIcon = `
+                        <a class="btn btn-transparent btn-sm text-danger" 
+                           href="${response.file_url}" target="_blank" download>
+                           <i class="fa fa-file-pdf"></i>
+                        </a>`;
+
+                    $(`#memoire-${memoireId} td:first`).nextAll().eq(5).html(fileIcon);
+                    
+                    alert("تم رفع الملف بنجاح!");
+                } else {
+                    alert("خطأ! لم يتم رفع الملف.");
+                }
+            },
+            error: function () {
+                alert("حدث خطأ أثناء رفع الملف.");
+            }
+        });
+    });
+    
+        /**
+         * Open Edit Memoire Modal
+         */
+        $(document).on('click', '.edit-memoire-btn', function () {
+            const $btn = $(this);
+            $('#editMemoireId').val($btn.data('id'));
+            $('#editMemoireSpeciality').val($btn.data('speciality'));
+            $('#editMemoireStudent').val($btn.data('student'));
+            $('#editMemoireCoeficient').val($btn.data('coeficient'));
+            $('#editMemoireCredit').val($btn.data('credit'));
+            $('#editMemoireGrade').val($btn.data('grade'));
+            $('#editMemoireForm').attr('action', `/memoires/edit/${$btn.data('id')}/`);
+        });
+    
+        /**
+         * Edit Memoire
+         */
+        $('#editMemoireForm').on('submit', function (e) {
+            e.preventDefault();
+            const $form = $(this);
+            $.ajax({
+                type: 'POST',
+                url: $form.attr('action'),
+                data: $form.serialize(),
+                success: function (response) {
+                    $('#editMemoireModal').modal('hide');
+                    $(`#memoire-${response.memoire_id}`).replaceWith(response.updated_row);
+                    alert("تم تعديل المذكرة بنجاح.");
+                },
+                error: function (xhr) {
+                    alert("حدث خطأ أثناء تعديل المذكرة.");
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    
+        /**
+         * Open Delete Memoire Modal
+         */
+        $(document).on('click', '.delete-memoire-btn', function () {
+            const $btn = $(this);
+            const id = $btn.data('id');
+            $('#deleteMemoireForm').attr('action', `/memoires/delete/${id}/`);
+            $('#deleteMemoireModal .modal-body').text(`هل أنت متأكد أنك تريد حذف المذكرة "${$btn.data('name')}"؟`);
+        });
+    
+        /**
+         * Delete Memoire
+         */
+        $('#deleteMemoireForm').on('submit', function (e) {
+            e.preventDefault();
+            const $form = $(this);
+            $.ajax({
+                type: 'POST',
+                url: $form.attr('action'),
+                success: function (response) {
+                    $('#deleteMemoireModal').modal('hide');
+                    $(`#memoire-${response.memoire_id}`).remove();
+                    alert("تم حذف المذكرة بنجاح.");
+                },
+                error: function (xhr) {
+                    alert("حدث خطأ أثناء حذف المذكرة.");
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+    
+</script>
+{% endblock %}

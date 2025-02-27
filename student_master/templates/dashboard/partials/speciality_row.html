@@ -1,0 +1,18 @@
+<tr id="speciality-{{ speciality.id }}">
+    <td>{{ speciality.name }}</td>
+    <td>{{ speciality.name_en }}</td>
+    <td>{{ speciality.filiere.name }} <strong>[{{speciality.filiere.domain.name}}]</strong></td>
+    <td>
+        <button class="btn btn-transparent btn-sm edit-speciality-btn text-warning" 
+                data-id="{{ speciality.id }}" 
+                data-name="{{ speciality.name }}" 
+                data-namen="{{ speciality.name_en }}"
+                data-filiere="{{ speciality.filiere.id }}" 
+                data-toggle="modal" 
+                data-target="#editSpecialityModal"><i class="fa fa-edit"></i></button>
+        <button class="btn btn-transparent btn-sm delete-speciality-btn text-danger" 
+                data-id="{{ speciality.id }}" 
+                data-toggle="modal" 
+                data-target="#deleteSpecialityModal"><i class="fa fa-trash"></i></button>
+    </td>
+</tr>

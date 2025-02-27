@@ -1,0 +1,45 @@
+<tr id="memoire-{{ memoire.id }}">
+    <td>{{ memoire.speciality }}</td>
+    <td>{{ memoire.student }}</td>
+    <td>{{ memoire.coeficient }}</td>
+    <td>{{ memoire.credit }}</td>
+    <td>{{ memoire.grade }}</td>
+    <td>{{ memoire.session }}</td>
+    <td>
+       <!-- File Download Button -->
+       {% if memoire.memoire_file %}
+       <a class="btn btn-transparent btn-sm text-success"
+          href="{{ memoire.memoire_file.url }}"
+           title="تنزيل ملف المذكرة"
+          target="_blank"
+          download>
+          <i class="fa-solid fa-download"></i> 
+       </a>
+       {% else %}
+         <button class="btn btn-transparent btn-sm upload-memoire-file-btn text-primary"
+               data-id="{{ memoire.id }}"
+               data-toggle="modal"
+               data-target="#uploadMemoireFileModal" title="رفع ملف المذكرة">
+               <i class="fa-solid fa-upload"></i>
+         </button>
+       {% endif %}
+       
+        <button class="btn btn-transparent btn-sm edit-memoire-btn text-warning"
+                data-id="{{ memoire.id }}"
+                data-speciality="{{ memoire.speciality.id }}"
+                data-student="{{ memoire.student.id }}"
+                data-coeficient="{{ memoire.coeficient }}"
+                data-credit="{{ memoire.credit }}"
+                data-grade="{{ memoire.grade }}"
+                data-toggle="modal"
+                data-target="#editMemoireModal">
+            <i class="fas fa-edit"></i>
+        </button>
+        <button class="btn btn-transparent btn-sm delete-memoire-btn text-danger"
+                data-id="{{ memoire.id }}"
+                data-toggle="modal"
+                data-target="#deleteMemoireModal">
+            <i class="fas fa-trash"></i>
+        </button>
+    </td>
+</tr>

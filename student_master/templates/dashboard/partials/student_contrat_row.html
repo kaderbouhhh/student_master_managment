@@ -1,0 +1,53 @@
+<tr id="student-{{ student_contrat.id }}">               
+    <td>{{ contrat.first_name }}</td>
+    <td>{{ contrat.last_name }}</td> 
+    <td>{{ contrat.email }}</td>             
+    <td>{{ contrat.birth_day|date:'Y-m-d' }}</td> 
+    <td>{{ contrat.birth_place }}</td>
+    <td>{{ contrat.birth_wilaya }}</td>          
+    <td class="text-right pe-5">
+        <input type="checkbox" class="contrat-checkbox" value="{{ contrat.id }}">
+        <button class="btn btn-transparent btn-sm student-contrat-btn text-danger"> 
+            {% if contrat.id %}
+            <a href="{% url 'generate_contract_pdf' contrat.id %}">
+                <i class="fa fa-file-pdf text-danger"></i> تحميل العقد PDF
+            </a>
+            
+            {% else %}
+            <span class="text-muted">لا يوجد عقد</span>
+            {% endif %}
+            
+       </button>
+        <!-- ✅ Edit Button -->
+       <button class="btn btn-transparent btn-sm edit-student-btn text-warning" 
+            data-id="{{ contrat.id }}" 
+            data-first-name="{{ contrat.first_name }}" 
+            data-last-name="{{ contrat.last_name }}"
+            data-first-name-en="{{ contrat.first_name_en }}"
+            data-last-name-en="{{ contrat.last_name_en }}"
+            data-birth-day="{{ contrat.birth_day|date:'Y-m-d' }}" 
+            data-birth-place="{{ contrat.birth_place }}"
+            data-birth-place-en="{{ contrat.birth_place_en }}"
+            data-birth-wilaya="{{ contrat.birth_wilaya }}"
+            data-live-wilaya="{{ contrat.live_wilaya }}"
+            data-address="{{ contrat.address }}"
+            data-email="{{ contrat.email }}"
+            data-branch="{{ contrat.branch }}"
+            data-category="{{ contrat.category }}"
+            data-sexe="{{ contrat.sexe }}"
+            data-academic-year="{{ contrat.academic_year }}"
+            data-toggle="modal" 
+            data-target="#editStudentContratModal">
+            <i class="fa fa-edit"></i> تعديل
+       </button>
+
+<!-- ✅ Delete Button -->
+<button class="btn btn-transparent btn-sm delete-student-btn text-danger" 
+data-id="{{ contrat.id }}" 
+data-toggle="modal" 
+data-target="#deleteStudentContratModal">
+<i class="fa fa-trash"></i> حذف
+</button>
+
+    </td>
+</tr>   

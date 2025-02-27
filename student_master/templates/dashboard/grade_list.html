@@ -1,0 +1,157 @@
+{% extends 'attendance/dashboard.html' %}
+{% block dashboard_content %}
+<div class="d-flex justify-content-between align-items-center p-3 mb-5 mt-1 border-bottom">
+    <h3>إدارة العـلامــات</h3>   
+    <button type="button" class="btn btn-success ml-2" data-toggle="modal" data-target="#addGradeModal">
+        <i class="fas fa-plus"></i> إضافة علامة جديدة
+    </button>
+</div>
+
+<div class="table-responsive" style="font-size: 0.8rem;">
+    <table id="gradeTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+    <thead class="text-right bg-dark">
+        <tr>
+            <td class="text-center text-light fw-bold">الطالب</td>
+            <td class="text-center text-light fw-bold">المادة</td>
+            <td class="text-center text-light fw-bold">السنة (السداسي)</td>
+            <td class="text-center text-light fw-bold">النقطة</td>
+            <td class="text-center text-light fw-bold">الرصيد</td>
+            <td class="text-center text-light fw-bold">الدورة</td>
+            <td class="text-center text-light fw-bold">إجراءات</td>
+        </tr>
+    </thead>
+    <tbody id="grade-table-body">
+        {% for grade in grades %}
+            {% include 'dashboard/partials/grade_row.html' with grade=grade %}
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% include 'dashboard/modals/grade_modals.html' %}
+
+<script>
+    $(document).ready(function () {
+          // Initialize DataTable
+          const gradeTable = $('#gradeTable').DataTable({
+            responsive: true,
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.13.5/i18n/ar.json",
+            },
+        });
+       // Handle speciality change to update student and subject lists
+    $('#id_speciality').change(function () {
+        var specialityId = $(this).val();
+
+        if (specialityId) {
+            $.ajax({
+                url: "{% url 'get_students_and_subjects' %}",
+                data: { speciality_id: specialityId },
+                success: function (response) {
+                    var studentField = $('#id_student');
+                    var subjectField = $('#id_subject');
+                    
+                    studentField.empty().append('<option value="">اختر الطالب</option>');
+                    subjectField.empty().append('<option value="">اختر المادة</option>');
+
+                    // Append students to student field
+                    $.each(response.students, function (index, student) {
+                        studentField.append('<option value="' + student.id + '">' + student.first_name + ' ' + student.last_name + '</option>');
+                    });
+
+                    // If no subjects are returned, show a placeholder
+                    if (response.subjects.length === 0) {
+                        subjectField.append('<option value="">لا توجد مواد</option>');
+                    } else {
+                        // Append subjects to subject field
+                        $.each(response.subjects, function (index, subject) {
+                            subjectField.append('<option value="' + subject.id + '">' + subject.name + '</option>');
+                        });
+                    }
+                },
+                error: function () {
+                    alert('خطأ في استرداد البيانات.');
+                }
+            });
+        } else {
+            // Clear the fields if no speciality is selected
+            $('#id_student').empty().append('<option value="">اختر الطالب</option>');
+            $('#id_subject').empty().append('<option value="">اختر المادة</option>');
+        }
+    });
+        // Add Grade Form Submission
+        $('#addGradeForm').on('submit', function (e) {
+            e.preventDefault();
+            var form = $(this);
+            
+            // Submit the form using AJAX POST
+            $.post(form.attr('action'), form.serialize(), function (response) {
+                if (response.status === 'success') {
+                    $('#grade-table-body').append(response.new_row);
+                    $('#addGradeModal').modal('hide');
+                    alert('تمت إضافة العلامة بنجاح.');
+                } else {
+                    alert('حدث خطأ أثناء إضافة العلامة.');
+                }
+            }).fail(function () {
+                alert('حدث خطأ أثناء إضافة العلامة.');
+            });
+        });
+
+        // Edit Grade Modal Handler
+        $(document).on('click', '.edit-grade-btn', function () {
+            var gradeId = $(this).data('id');
+            
+            // Load the edit form using AJAX
+            $.get(`/grades/edit/${gradeId}/`, function (response) {
+                if (response.status === 'success') {
+                    $('#editGradeModal .modal-body').html(response.form_html);
+                    $('#editGradeForm').attr('action', `/grades/edit/${gradeId}/`);
+                    $('#editGradeModal').modal('show');
+                } else {
+                    alert('خطأ في تحميل نموذج التعديل');
+                }
+            }).fail(function () {
+                alert('حدث خطأ أثناء جلب بيانات العلامة.');
+            });
+        });
+
+        // Handle Edit Grade Form Submission
+        $('#editGradeForm').on('submit', function (e) {
+            e.preventDefault();
+            var form = $(this);
+            
+            // Submit the edit form using AJAX POST
+            $.post(form.attr('action'), form.serialize(), function (response) {
+                if (response.status === 'success') {
+                    // Replace the old row with the updated row in the table
+                    $('#grade-' + response.grade_id).replaceWith(response.updated_row);
+                    $('#editGradeModal').modal('hide');
+                    alert('تم تحديث العلامة بنجاح.');
+                } else {
+                    alert('حدث خطأ أثناء تحديث العلامة: ' + response.errors);
+                }
+            }).fail(function () {
+                alert('حدث خطأ أثناء تحديث العلامة.');
+            });
+        });
+
+        // Delete Grade Button Handler
+       
+        $('#deleteGradeForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                success: function(response) {
+                    $('#deleteGradeModal').modal('hide');
+                    $('#grade-' + response.grade_id).remove();
+                },
+                error: function() {
+                    alert("حدث خطأ أثناء حذف المادة.");
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

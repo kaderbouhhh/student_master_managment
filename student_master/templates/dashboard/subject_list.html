@@ -1,0 +1,111 @@
+{% extends 'attendance/dashboard.html' %}
+
+{% block dashboard_content %}
+<div class="d-flex justify-content-between align-items-center p-3 mb-5 mt-1 border-bottom">
+    <h3>إدارة المــواد</h3>
+    <button type="button" class="btn btn-success ml-2" data-toggle="modal" data-target="#addSubjectModal">
+        <i class="fas fa-plus"></i> إضافة مادة جديدة
+    </button>
+</div>
+
+<div class="table-responsive" style="font-size: 0.8rem;">
+    <table id="subjectTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+    <thead class="text-right bg-dark">
+        <tr>
+            <td class="text-center text-light fw-bold">الاسم</th>
+            <td class="text-center text-light fw-bold">الرصيد</th>
+            <td class="text-center text-light fw-bold">المعامل</th>
+            <td class="text-center text-light fw-bold">الوحدة</th>
+            <td class="text-center text-light fw-bold">السنة (السداسي)</th>
+            <td class="text-center text-light fw-bold">الإجراءات</th>
+        </tr>
+    </thead>
+    <tbody id="subjectTableBody">
+        {% for subject in subjects %}
+        {% include 'dashboard/partials/subject_row.html' %}
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% include 'dashboard/modals/subject_modals.html' %}
+
+<script>
+    $(document).ready(function() {
+          // Initialize DataTable
+          const subjectTable = $('#subjectTable').DataTable({
+            responsive: true,
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.13.5/i18n/ar.json",
+            },
+        });
+        $.ajaxSetup({ headers: { "X-CSRFToken": "{{ csrf_token }}" } });
+
+        // Add Subject
+        $('#addSubjectForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#addSubjectModal').modal('hide');
+                    $('#subjectTableBody').append(response.new_row);
+                },
+                error: function() {
+                    alert("حدث خطأ أثناء إضافة المادة.");
+                }
+            });
+        });
+
+        // Edit Subject Modal
+        $(document).on('click', '.edit-subject-btn', function() {
+            const id = $(this).data('id');
+            $('#editSubjectId').val(id);
+            $('#editSubjectName').val($(this).data('name'));
+            $('#editSubjectCredit').val($(this).data('credit'));
+            $('#editSubjectCoeficient').val($(this).data('coeficient'));
+            $('#editSubjectUnity').val($(this).data('unity'));
+            $('#editSubjectForm').attr('action', `/subjects/edit/${id}/`);
+        });
+
+        // Edit Subject
+        $('#editSubjectForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#editSubjectModal').modal('hide');
+                    $('#subject-' + response.subject_id).replaceWith(response.updated_row);
+                },
+                error: function() {
+                    alert("حدث خطأ أثناء تعديل المادة.");
+                }
+            });
+        });
+
+        // Delete Subject Modal
+        $(document).on('click', '.delete-subject-btn', function() {
+            const id = $(this).data('id');
+            $('#deleteSubjectForm').attr('action', `/subjects/delete/${id}/`);
+        });
+
+        // Delete Subject
+        $('#deleteSubjectForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                success: function(response) {
+                    $('#deleteSubjectModal').modal('hide');
+                    $('#subject-' + response.subject_id).remove();
+                },
+                error: function() {
+                    alert("حدث خطأ أثناء حذف المادة.");
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

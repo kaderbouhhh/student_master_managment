@@ -1,0 +1,487 @@
+{% load static %}
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>كشف نقاط الطالب(ة):  _ {{ deliberation.student.last_name }} {{ deliberation.student.first_name }}</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'attendance/styles.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'favicon.ico' %}">
+
+    <!-- Quill.js Library -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=Lateef:wght@200;300;400;500;600;700;800&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=Gulzar&family=Lateef:wght@200;300;400;500;600;700;800&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <!-- Add jQuery UI (required for dragging) -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<!-- jQuery UI CSS -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap" rel="stylesheet">
+<!-- jQuery UI JS -->
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+    <style>
+        body {
+            font-family: Lateef , serif;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 18px;
+            margin: 0;
+            padding: 0;
+           
+        }
+
+        .transcript {
+            width: 210mm;
+            height: 297mm;
+            margin: auto;
+            padding: auto;
+            background: #fff;
+            padding: auto;
+            position: relative;
+            writing-mode: vertical-rl; /* Enables vertical text flow */
+            text-align: center;
+           
+        }
+        .cadre {
+            width: 200mm;
+            height: 285mm;
+            margin: auto;
+            padding: auto;
+            background: #fff;
+            padding: auto;
+            position: relative;
+            writing-mode: vertical-rl; /* Enables vertical text flow */
+            text-align: center;
+            border-left: 2px solid black;
+        }
+        
+        .header {
+            margin: 30px auto;
+            padding-right:5px; 
+            font-size: 17px; 
+            border-left: 2px solid black; 
+            padding-left:0;  
+            }
+
+
+        .presentation {
+            font-family: Lateef, serif;
+            font-weight: 400;
+            font-size: 22px;
+            margin-bottom: 9mm;
+            padding: 0;
+            color: #333; 
+            text-align: right;  
+           
+        }
+      
+        .presentation p {
+            font-family: Lateef, serif;
+            font-weight: 400;
+            font-size: 19px;
+            margin-bottom: 9mm;
+            padding: 0;
+            color: #333; 
+            text-align: right;  
+             
+            line-height: 2mm;
+        }
+
+        .decision p {
+           
+            text-align: right;  
+            font-size: 17px; !important; 
+        }
+
+        .section {   
+            padding: auto;
+            margin: auto;         
+            width: 100%;
+            text-align: center;
+        }
+               
+     
+       table {
+        margin: auto;
+        border : 1px solid black;
+        height: 95%;
+        font-size: 12px;
+        line-height: 4mm;
+       }
+       table tbody {
+       }
+       table tbody td{
+        font-size: 13px;
+       }
+       tr {
+        border : 1px solid black;
+       }
+      
+       td {
+        border : 1px solid black;
+       
+     
+       }
+       th {
+        border : 1px solid black;       
+       }
+       .first_line {
+        font-size: 1.2em;
+        text-weight: bold;
+      }
+      .second_line, .semestre {
+        font-size: 1.2em;
+        text-weight: bold;
+        
+      }
+      .third_line {
+        font-size: 1.2em;
+        text-weight: bold;
+        
+      }
+       .signature {
+         text-align: left;
+         margin: 25mm 10mm;
+         font-size: 10px;
+        }
+        p {
+          font-size: 12px;
+       }
+       
+     hr {
+      border: 1px solid black;
+      }
+       
+
+
+      /* Print-specific styles */
+      @media print {
+        @page {
+            size: A4; /* Set A4 size */
+            margin: 0; /* Remove default browser margins */
+        }
+        body {
+            margin: 0; /* Remove body margins */
+            padding: 0; /* Remove body padding */
+        }
+    
+        .transcript {
+            width: 210mm; /* A4 width */
+            height: 297mm; /* A4 height */
+            margin: 0; /* Center the content */
+            padding: 0; /* Add some padding for better layout */
+            background: #fff;
+            box-shadow: none; /* Remove shadows for printing */
+        }
+        
+
+        .presentation {
+            margin-bottom: 9mm;
+            padding: 0;
+            color: #333; 
+            text-align: right;  
+        }
+        .presentation p {
+           
+            text-align: right;  
+            font-size: 19px; !important; 
+        }
+        .decision p {
+           
+            text-align: right;  
+            font-size: 16px; !important; 
+        }
+
+
+        .section {   
+            padding: auto;
+            margin: auto;         
+            width: 100%;
+            text-align: center;
+        }
+               
+     
+       table {
+        margin: auto;
+        border : 1px solid black;
+        height: 90%;
+        font-size: 12px;
+        
+       }
+       tr {
+        border : 1px solid black;
+       }
+      
+       td {
+        border : 1px solid black;
+       
+     
+       }
+       table thead tr th{
+        border : 2px solid black;       
+       }
+       .first_line {
+        font-size: 1.5em;
+        text-weight: bold;
+      }
+      .second_line, .semestre {
+        font-size: 1.4em;
+        text-weight: bold;
+        
+      }
+      .third_line {
+        font-size: 1.4em;
+        text-weight: bold;
+        
+      }
+       .signature {
+         text-align: left;
+         margin: 25mm auto;
+         font-size: 14px;
+        }
+       
+     hr {
+      border: 1px solid black;
+      }
+       
+
+    
+}
+    </style>
+</head>
+<body>
+    <div class="transcript">
+        <div class="cadre">
+        <div class="row header align-items-center">
+            <!-- القسم العربي -->
+            <div class="col-md-2 text-right p-0" dir="rtl"  style="height:41%; line-height: 1.2;">
+                الجمهورية الجزائرية الديمقراطية الشعبية<br>
+                وزارة التعليم العالي و البحث العلمي<br>
+                المدرسة العليا للأساتذة الشيخ محمد البشير الابراهيمي بالقبة <br><br>
+                {{ deliberation.speciality.name }}
+            </div>
+           
+           <!-- الشعار في المنتصف -->
+           <div class="col-md-1 text-center p-0" style="height:18%;">
+               <img src="{% static 'attendance/logo.jpeg' %}" alt="شعار" width="100">
+           </div>
+
+            <!-- القسم الفرنسي -->
+            <div class="col-md-2 text-left p-0" style="height:41%; line-height: 1;">
+                République Algérienne Démocratique et Populaire<br>
+                Ministère de l'Enseignement Supérieur et de la Recherche Scientifique<br>
+                Ecole Normale Supérieure - Kouba <br><br>
+                {{ deliberation.speciality.name_en }}
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-md-12 text-center" style="height:100%; font-size: 36px;">
+                <strong>كشف النقاط</strong>
+            </div>
+        </div>    
+        <div class="presentation mt-3">
+           <p style="padding-bottom: 15mm;">يشهد المدير المساعد المكلف بالتعليم و الشهادات والتكوين المتواصل بالمدرسة العليا للأساتذة الشيخ محمد البشير الابراهيم القبة أن : </p>
+
+
+           <p><span class="my-2"> الاسم: <strong>{{ student.first_name}}</strong></span><span class="my-2">   اللقب:  <strong>{{ student.last_name}}</strong></span><span class="my-2">تاريخ الازدياد  :  <strong>{{ student.birth_day|date:"Y/m/d" }}</strong></span><span class="my-2">مكان الازدياد :  <strong>{{ student.birth_place}}</strong></span><span class="my-2"> ولاية الازدياد:  <strong>{{ student.birth_wilaya }}</strong></span><span class="my-2">المسجل(ة)في السنة : <strong>{{ deliberation.pedagogic_year.year_name }}</strong> ماستر أكاديمي</span></p>
+
+           <p><span class="my-2">خلال السنة الدراسية: {{ deliberation.academic_year }}</span><span class="my-2">الميدان: <strong>{{ deliberation.speciality.filiere.domain.name }}</strong></span><span class="my-1">الفرع: <strong>{{ deliberation.speciality.filiere.name }}</strong></span><span class="my-1">التخصص: <strong>{{ deliberation.speciality.name }}</strong></span><span class="my-2">تحت رقم التسجيل: <strong>{{ enrollment.matricule }}</strong><span><span class="my-2">قد تحصل(ت) على النتائج التالية:</span></p>
+                    </div>
+
+  <div class="section">
+
+  
+
+
+  <table style="border: 2px solid black;">
+    <thead style="border: 2px solid black;">
+        <tr style="border-right: 2px solid black;">
+            <th class="first_line fs-5" rowspan="3">السداسي</th>
+            <th class="first_line fs-5" colspan="2">وحدات التعليم</th>
+            <th class="first_line fs-5" colspan="3">المواد المكونة لوحدة التعليم</th>
+            <th class="first_line fs-5" colspan="8">النتائج المحصل عليها</th>
+        </tr>
+        <tr>
+            <th class="second_line fs-6" rowspan="2">الطبيعة</th>
+            <th class="second_line fs-6" rowspan="2">الرمز</th>
+            <th class="second_line fs-6" rowspan="2">العنوان</th>
+            <th class="second_line fs-6" rowspan="2">الأرصدة</th>
+            <th class="second_line fs-6" rowspan="2">المعامل</th>
+            <th class="second_line fs-6" colspan="2">المواد</th>
+            <th class="second_line fs-6" colspan="3">وحدات التعليم</th>
+            <th class="second_line fs-6" colspan="3">السداسي</th>
+        </tr>
+        <tr style="border-left: 2px solid black;">
+            <th class="third_line fs-6">النقطة</th>
+            <th class="third_line fs-6">الدورة</th>
+            <th class="third_line fs-6">المعدل</th>
+            <th class="third_line fs-6">الأرصدة</th>
+            <th class="third_line fs-6">الدورة</th>
+            <th class="third_line fs-6">المعدل</th>
+            <th class="third_line fs-6">الأرصدة</th>
+            <th class="third_line fs-6">الدورة</th>          
+        </tr>
+    </thead>
+    <tbody  style="border-left: 2px solid black;">
+        
+     <tr style="border: 2px solid black;">
+      {% if deliberation.pedagogic_year.year_name == "الثانية" %}
+          <td class="second_line fs-5" rowspan="{{ total_subjects_count }}">الثالث</td>
+           
+            {% for unit_data in subjects_unit_count %}
+            
+                <td rowspan="{{ unit_data.subject_count }}" class="text-right pb-2">{{ unit_data.unity.name }}</td>
+                <td rowspan="{{ unit_data.subject_count }}">{{ unit_data.unity.code }}</td>
+                {% for subject in unit_data.subject_details %}             
+                                     
+                        <td class="text-right pb-2">{{ subject.subject.name }}</td>
+                        <td>{{ subject.subject.credit }}</td>
+                        <td>{{ subject.subject.coeficient }}</td>
+                        <td>{{subject.grade}}</td>
+                        <td>{{subject.session}}</td>  
+                        {% if forloop.first %}
+                          <td rowspan="{{ unit_data.subject_count }}">{{ unit_data.unity_average }}</td>
+                          <td rowspan="{{ unit_data.subject_count }}">{{ unit_data.unity_credit }}</td>
+                          <td rowspan="{{ unit_data.subject_count }}">{{ subject.session }}</td>
+                         
+                        {% endif %} 
+                        {% if forloop.first and forloop.parentloop.first %}
+                        <td class="fs-5" rowspan="{{ average_counts }}">{{ overall_average }}</td>
+                        <td class="fs-5" rowspan="{{ average_counts }}">{{ total_credit }}</td>
+                        <td rowspan="{{ average_counts }}">{{ subject.session }}</td>
+                        {% endif %}  
+                    </tr> <tr>                            
+                {% endfor %}                    
+            </tr> <tr> 
+            {% endfor %}
+        </tr>
+       
+            <tr style="border-right: 2px solid black;">
+                {% if memoire %}
+                <td class="fs-5">الرابع</td>
+                <td colspan="2">مشروع التخرج</td>
+                <td>المذكرة</td>
+                <td>{{ memoire.credit }}</td>
+                <td>{{ memoire.coeficient }}</td>
+                <td>{{ memoire.grade }}</td>
+                <td>{{ memoire.session }}</td>
+                <td>{{ memoire.grade }}</td>
+                <td>{{ memoire.credit }}</td>
+                <td>{{ memoire.session }}</td>
+                <td class="fs-5">{{ memoire.grade }}</td>
+                <td class="fs-5">{{ memoire.credit }}</td>
+                <td>{{ memoire.session }}</td>
+                {% endif %} 
+      {% else %}
+        <td class="second_line  fs-5" rowspan="{{ total_subjects_count }}">الاول</td>
+        
+        {% for unit_data in subjects_unit_count %}
+            
+        <td rowspan="{{ unit_data.subject_count }}" class="text-right pb-2">{{ unit_data.unity.name }}</td>
+        <td rowspan="{{ unit_data.subject_count }}">{{ unit_data.unity.code }}</td>
+        {% for subject in unit_data.subject_details %}             
+                             
+                <td class="text-right pb-2">{{ subject.subject.name }}</td>
+                <td>{{ subject.subject.credit }}</td>
+                <td>{{ subject.subject.coeficient }}</td>
+                <td>{{subject.grade}}</td>
+                <td>{{subject.session}}</td>  
+                {% if forloop.first %}
+                  <td rowspan="{{ unit_data.subject_count }}">{{ unit_data.unity_average }}</td>
+                  <td rowspan="{{ unit_data.subject_count }}">{{ unit_data.unity_credit }}</td>
+                  <td rowspan="{{ unit_data.subject_count }}">{{ subject.session }}</td>
+                 
+                {% endif %} 
+                {% if forloop.first and forloop.parentloop.first %}
+                <td class="fs-5" rowspan="{{ average_counts }}">{{ overall_average }}</td>
+                <td class="fs-5" rowspan="{{ average_counts }}">{{ total_credit }}</td>
+                <td rowspan="{{ average_counts }}">{{ subject.session }}</td>
+                {% endif %}  
+            </tr> <tr>                            
+        {% endfor %}                    
+    </tr> <tr> 
+    {% endfor %}
+ </tr>  <tr style="border: 2px solid black;">
+                <td class="second_line fs-5" rowspan="{{ total_subjects_count_2 }}">الثاني</td>
+                
+              {% for unity in subjects_unit_count_2 %}
+                 
+                     <td rowspan="{{ unity.subject_count }}" class="text-right pb-2">{{ unity.unity.name }}</td>
+                     <td rowspan="{{ unity.subject_count }}">{{ unity.unity.code }}</td>
+                     {% for subject in unity.subject_details %}             
+                                          
+                             <td class="text-right pb-2">{{ subject.subject.name }}</td>
+                             <td>{{ subject.subject.credit }}</td>
+                             <td>{{ subject.subject.coeficient }}</td>
+                             <td>{{subject.grade}}</td>
+                             <td>{{subject.session}}</td>  
+                             {% if forloop.first %}
+                               <td rowspan="{{ unity.subject_count }}">{{ unity.unity_average }}</td>
+                               <td rowspan="{{ unity.subject_count }}">{{ unity.unity_credit }}</td>
+                               <td rowspan="{{ unity.subject_count }}">{{ subject.session }}</td>
+                              
+                             {% endif %} 
+                             {% if forloop.first and forloop.parentloop.first %}
+                             <td class="fs-5" rowspan="{{ average_counts_2 }}">{{ overall_average_2 }}</td>
+                             <td class="fs-5" rowspan="{{ average_counts_2 }}">{{ total_credit_2 }}</td>
+                             <td rowspan="{{ average_counts_2 }}">{{ subject.session }}</td>
+                             {% endif %}  
+                         </tr> <tr>                            
+                     {% endfor %}                    
+                 </tr> <tr> 
+                 {% endfor %}  
+                </tr><tr> 
+            {% endif %}   
+        </tbody>
+</table>
+    <div class="decision">
+      <p style="text-align: right; margin-bottom: 15mm; font-size:18px; margin-right:0;">المعدل السنوي:<strong class="mt-3">{{ average }}</strong>مجموع الأرصدة المحصل عليها: <strong class="mt-3">{{ overall_credit }}</strong>قرار لجنة المداولات: <strong class="mt-3">{{deliberation.result_status}}</strong> بتقدير <strong> {{deliberation.mention}} </strong></p>
+    </div>
+<div class="signature text-left" style="margin-top: 10mm; margin-right:-25px;">
+      <span class="mb-0">القبـــــة فـي : <strong>{% now "Y/m/d" %}</strong> </span><br><span class="mx-0">المدير المساعد المكلف بالتعليم </span><br><span class="mt-0">والشهــادات والتكوين المتواصل</span>
+</div>
+
+</div>|
+ <div class="text-right" style="font-size:12px; position: absolute; left:0;"><strong>ملاحظة: </strong>لا تسلم سوى نسخة واحدة من هذه الشهادة</div> 
+</div>
+<div class="text-right my-5 d-flex justify-content-between mr-0" style="font-size:12px;">
+    <div>العنوان: <strong>ص.ب.92 القبة-الجزائر</strong></div>
+    <div>الهاتف: <strong> 213 023 72 73 25 </strong> :Tel </div>
+    <div>الفاكس: <strong> 213 023 72 73 25 </strong> :Fax </div>
+    <div>Adresse: <strong>B.P.92 Kouba-Alger</strong></div>
+</div>
+</div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

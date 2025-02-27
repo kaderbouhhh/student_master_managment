@@ -1,0 +1,47 @@
+<tr id="enrollment-{{ enrollment.id }}">
+    <td>{{ enrollment.matricule }}</td>
+    <td>{{ enrollment.student }}</td>
+    <td>{{ enrollment.speciality.name }}</td>
+    <td>{{ enrollment.pedagogic_year.year_name }}</td>    
+    <td>{{ enrollment.academic_year }}</td>
+    <td>{{ enrollment.date_enrolled }}</td>
+    <td>
+        <a class="btn btn-bg-transparent btn-sm certificat-enrollment-btn text-primary" 
+           href="{% url 'certificate' id=enrollment.id %}" target="_blank">
+           <i class="fas fa-scroll"></i> شهادة مدرسية
+        </a> 
+        {% if user_is_admin and enrollment.academic_year == "2025/2024" %}
+           <button class="btn btn-bg-transparent btn-sm badge-issue-btn {% if enrollment.badge_issued %}text-muted{% else %}text-success{% endif %}" 
+                   data-enrollment-id="{{ enrollment.id }}" 
+               {% if enrollment.badge_issued %}disabled{% endif %}>
+               {% if enrollment.badge_issued %}
+                   البطاقة سحبت
+               {% else %}
+                   سحب البطاقة
+               {% endif %}
+           </button>
+        {% endif %}
+
+    
+        <button class="btn btn-bg-transparent btn-sm edit-enrollment-btn text-warning" 
+        data-id="{{ enrollment.id }}" 
+        data-matricule="{{ enrollment.matricule }}" 
+        data-student="{{ enrollment.student.id }}" 
+        data-speciality="{{ enrollment.speciality.id }}" 
+        data-pedagogic-year="{{ enrollment.pedagogic_year.year_name }}" 
+        data-academic-year="{{ enrollment.academic_year }}"
+        data-academic-year="{{ enrollment.badge_issued }}"
+        data-academic-year="{{ enrollment.issued_badge_date }}"
+        data-toggle="modal" 
+        data-target="#editEnrollmentModal">
+    <i class="fas fa-edit"></i>
+</button>
+
+        <button class="btn btn-bg-transparent btn-sm delete-enrollment-btn text-danger" 
+                data-id="{{ enrollment.id }}" 
+                data-toggle="modal" 
+                data-target="#deleteEnrollmentModal">
+            <i class="fas fa-trash"></i>
+        </button>
+    </td>
+</tr>

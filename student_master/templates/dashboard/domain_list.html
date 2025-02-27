@@ -1,0 +1,116 @@
+{% extends 'attendance/dashboard.html' %}
+
+{% block dashboard_content %}
+<div class="d-flex justify-content-between align-items-center p-3 mb-5 mt-1 border-bottom">
+    <h3>إدارة الأقســام</h3>
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addDomainModal">
+        <i class="fas fa-plus"></i> إنشاء قسم جديد
+    </button>
+</div>
+
+<table class="table table-bordered mt-4">
+    <thead class="text-right bg-dark">
+        <tr>
+            <td class="text-light fw-bold">اسم الميدان</th>
+            <td class="text-light fw-bold">الاسم بالفرنسية</th>
+            <td class="text-light fw-bold">الإجراءات</th>
+        </tr>
+    </thead>
+    <tbody id="domainTableBody">
+        {% for domain in domains %}
+        {% include 'dashboard/partials/domain_row.html' %}
+        {% endfor %}
+    </tbody>
+</table>
+
+{% include 'dashboard/modals/domain_modals.html' %}
+<script>
+    $(document).ready(function () {
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                }
+            }
+        });
+    
+        // Add Domain
+        $('#addDomainForm').on('submit', function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function (response) {
+                    $('#addDomainModal').modal('hide');
+                    $('#domainTableBody').append(response.new_row);
+                },
+                error: function () {
+                    alert('حدث خطأ أثناء إضافة القسم.');
+                }
+            });
+        });
+    
+        // Populate Edit Domain Modal
+        $('#editDomainModal').on('show.bs.modal', function (event) {
+            const button = $(event.relatedTarget); 
+            const domainId = button.data('id'); 
+            const form = $('#editDomainForm');
+            form.attr('action', `/domains/edit/${domainId}/`);
+    
+            // Fetch the domain data
+            $.ajax({
+                url: `/domains/${domainId}/data/`,
+                type: 'GET',
+                success: function (data) {
+                    if (data) {
+                        form.find('#editDomainName').val(data.name);
+                        form.find('#editDomainNameEn').val(data.name_en);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching domain data:", error);
+                }
+            });
+        });
+    
+        // Edit Domain
+        $('#editDomainForm').on('submit', function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function (response) {
+                    $('#editDomainModal').modal('hide');
+                    $('#domain-' + response.domain_id).replaceWith(response.updated_row);
+                },
+                error: function () {
+                    alert('حدث خطأ أثناء تعديل القسم.');
+                }
+            });
+        });
+    
+        // Delete Domain
+        $('#deleteDomainModal').on('show.bs.modal', function (event) {
+            const button = $(event.relatedTarget);
+            $('#deleteDomainForm').attr('action', '/domains/delete/' + button.data('id') + '/');
+        });
+    
+        $('#deleteDomainForm').on('submit', function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                success: function (response) {
+                    $('#deleteDomainModal').modal('hide');
+                    $('#domain-' + response.domain_id).remove();
+                },
+                error: function () {
+                    alert('حدث خطأ أثناء حذف القسم.');
+                }
+            });
+        });
+    });
+    </script>
+{% endblock %}

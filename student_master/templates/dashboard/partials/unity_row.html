@@ -1,0 +1,20 @@
+<tr id="unity-{{ unity.id }}">
+    <td>{{ unity.name }}</td>
+    <td>{{ unity.code }}</td>
+    <td>{{ unity.speciality }}</td>
+    <td>{{ unity.pedagogic_year }}</td>
+    <td>
+        <button class="btn btn-transparent btn-sm edit-unity-btn text-warning" 
+                data-id="{{ unity.id }}" 
+                data-name="{{ unity.name }}" 
+                data-code="{{ unity.code }}" 
+                data-pedagogicyear="{{ unity.pedagogic_year }}"
+                data-speciality="{{ unity.speciality.id }}" 
+                data-toggle="modal" 
+                data-target="#editUnityModal"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-transparent btn-sm delete-unity-btn text-danger" 
+                data-id="{{ unity.id }}" 
+                data-toggle="modal" 
+                data-target="#deleteUnityModal"><i class="fas fa-trash"></i></button>
+    </td>
+</tr>

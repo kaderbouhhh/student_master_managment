@@ -1,0 +1,18 @@
+<tr id="filiere-{{ filiere.id }}">
+    <td class="text-right">{{ filiere.name }}</td>
+    <td class="text-left">{{ filiere.name_en }}</td>
+    <td class="text-right">{{ filiere.domain.name }}</td>
+    <td>
+        <button class="btn btn-transparent btn-sm edit-filiere-btn text-warning" 
+                data-id="{{ filiere.id }}" 
+                data-name="{{ filiere.name }}" 
+                data-namen="{{ filiere.name_en }}"
+                data-domain="{{ filiere.domain.id }}" 
+                data-toggle="modal" 
+                data-target="#editFiliereModal"><i class="fa fa-edit"></i></button>
+        <button class="btn btn-transparent btn-sm delete-filiere-btn text-danger" 
+                data-id="{{ filiere.id }}" 
+                data-toggle="modal" 
+                data-target="#deleteFiliereModal"><i class="fa fa-trash"></i></button>
+    </td>
+</tr>

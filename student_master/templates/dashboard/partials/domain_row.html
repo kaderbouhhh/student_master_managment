@@ -1,0 +1,16 @@
+<tr id="domain-{{ domain.id }}">
+    <td class="text-right">{{ domain.name }}</td>
+    <td class="text-left">{{ domain.name_en }}</td>
+    <td>
+        <button class="btn btn-transparent btn-sm edit-domain-btn text-warning" 
+        data-id="{{ domain.id }}" 
+        data-name="{{ domain.name }}" 
+        data-name-en="{{ domain.name_en }}" 
+        data-toggle="modal" 
+        data-target="#editDomainModal"><i class="fa fa-edit"></i></button>
+        <button class="btn btn-transparent btn-sm delete-domain-btn text-danger" 
+                data-id="{{ domain.id }}" 
+                data-toggle="modal" 
+                data-target="#deleteDomainModal"><i class="fa fa-trash"></i></button>
+    </td>
+</tr>

@@ -1,0 +1,22 @@
+<tr id="grade-{{ grade.id }}">
+    <td>{{ grade.student }}</td>
+    <td>{{ grade.subject }}</td>
+    <td>{{ grade.pedagogic_year }}</td>
+    <td>{{ grade.grade }}</td>
+    <td>{{ grade.subject.credit }}</td>
+    <td>{{ grade.session }}</td>
+    <td>
+        <button class="btn btn-transparent btn-sm edit-grade-btn text-warning" 
+                data-id="{{ grade.id }}" 
+                data-name="{{ grade.name }}" 
+                data-credit="{{ subject.credit }}" 
+                data-coeficient="{{ subject.coeficient }}" 
+                data-unity="{{ subject.unity.id }}" 
+                data-toggle="modal" 
+                data-target="#editSubjectModal"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-transparent btn-sm delete-grade-btn text-danger" 
+                data-id="{{ grade.id }}" 
+                data-toggle="modal" 
+                data-target="#deleteGradeModal"><i class="fas fa-trash"></i></button>
+    </td>
+</tr>

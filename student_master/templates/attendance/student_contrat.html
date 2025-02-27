@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>عقد {% if student_contrat.sexe == 'أنثى' %}الطالبة{% else %}الطالب{% endif %}:  _ {{ student_contrat.last_name }} {{ student_contrat.first_name }}</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Aref+Ruqaa+Ink:wght@400;700&family=Carter+One&family=Great+Vibes&family=Katibeh&family=Lobster&family=Merienda:wght@300..900&family=Mirza:wght@400;500;600;700&family=Rakkas&family=Tangerine:wght@400;700&display=swap" rel="stylesheet">
+        <style>
+             .contrat {
+                font-family: Amiri, serif;
+                font-weight: 700;
+                font-style: normal;
+                margin: auto;
+                padding: auto;
+                text-align: center;
+                width: 207mm;
+                height: 290mm;
+             }
+             .hiheader {
+                line-height: 4mm;
+             }
+             .header {
+                border: 3px solid black;
+                border-radius: 25px;
+                width: 190mm;
+                text-align: center;
+                margin: auto;
+             }
+             .decret p{
+                font-size: 12px;
+             }
+            
+             @page {
+                size: A4;
+                margin: 0;
+            }
+            body {
+                width: 210mm;
+                height: 297mm;
+                margin: 0;
+                padding: 0;
+            }
+            .contract {
+                width: 100%;
+                height: 100%;
+                text-align: center;
+                font-family: "Amiri", serif;
+            }
+            .signature {
+                font-size: 12px;
+                margin: 0;
+                padding: 0;
+
+             }
+        </style>
+    </head>
+    <body>
+       <div class="contrat text-center mt-3">
+            <div class="hiheader text-center">
+                <p class="mb-2" style="font-size: 14px;">الجمهورية الجزائرية الديموقراطية الشعبية</p>
+                <h1 class="fs-2">عقد التزام</h1>
+                <p class="mt-2" style="font-size: 14px;">بين وزارو التربية الوطنية ممثلة في مدير تسيير الموارد البشرية من جهة:</p>
+            </div>
+            <div class="header text-center">
+                <div class="row mt-2 pb-2 px-2">
+                    <div class="col-2 m-0 p-0 me-2" style="width: 17%;">
+                        <p class="p-1 m-0">و{% if student_contrat.sexe == 'أنثى' %} الطالبة {% else %} الطالب{% endif %}:</p>
+                        <p class="p-1 m-0" style="padding-bottom: 6px !important; border-bottom: 3px solid black;">مكان الازدياد :</p>
+                        <p class="p-1 m-0">{% if student_contrat.sexe == 'أنثى' %} الساكنة {% else %}الساكن{% endif %}:</p>
+                    </div>
+                    <div class="col-5 m-0 p-0" style="border: 1px solid black; width: 41%;">
+                        <p class="text-end p-1 m-0 fs-6" style="border-bottom: 1px solid black;"><span class="name fs-6">{{ student_contrat.last_name }} {{ student_contrat.first_name }}</span></p>
+                        <p class="text-end p-1 m-0 pb-1" style="border-bottom: 3px solid black; margin: 0px;">{{ student_contrat.birth_place }}</p>
+                        <p class="text-end p-1 m-0" style="margin: 0px; font-size: 14px;">{{ student_contrat.address }}</p>
+                    </div>
+                    <div class="col-2 m-0 p-0" style="width: 17%;">
+                        <p class="p-1 m-0">تاريخ الازدياد :</p>
+                        <p class="p-1 m-0" style="padding-bottom: 6px !important; border-bottom: 3px solid black;">الولاية :</p>
+                        <p class="p-1 m-0">ولاية :</p>
+                    </div>
+                    <div class="col-3 text-right m-0 p-0" style="border: 1px solid black; width: 22%;">
+                        <p class="text-end p-1 m-0" style="border-bottom: 1px solid black;"><strong>{{ student_contrat.birth_day|date:"Y/m/d" }}</strong></p>
+                        <p class="text-end p-1 m-0 pb-1" style="border-bottom: 3px solid black; margin: 0px;">{{ student_contrat.birth_wilaya }}</p>
+                        <p class="text-end p-1 m-0" style="margin: 0px;">{{ student_contrat.live_wilaya }}</p>
+                    </div>
+                    
+                </div>
+            </div>
+            <p class="my-1" style="font-size: 18px;">من جهة أخرى</p>
+        <div class="decret me-2">
+            <p class="text-end w-100 m-0">
+                -بمقتضى القانون رقم 99-05 المؤرخ في 18 ذي الحجة 1419 الموافق لـ 04 أبريل 1999 والمتضمن القانون التوجيهي للتعليم العالي, المعدل والمتمم.
+            </p>
+            <p class="text-end w-100 m-0">
+                -بمقتضى المرسوم التنفيذي رقم 94-265 المؤرخ في 29 ربيع الأول 1415 الموافق لـ 06 سبتمبر 1994 الذي يحدد صلاحيات وزير التربية الوطنية.
+            </p>
+            <p class="text-end w-100 m-0">
+                -بمقتضى الأمر التنفيذي رقم 06-03 المؤرخ في 19 جمادي الثانية 1415 الموافق لـ 15 يوليو 2006 والمتضمن القانون الأساسي العام للوظيفة العمومية.
+            </p>
+            <p class="text-end w-100 m-0">
+                -بمقتضى القانون رقم 08-04 المؤرخ في 15 محرم 1429 الموافق لـ 23 يناير 2008, المتضمن القانون التوجيهي للتربية الوطنية.
+            </p>
+            <p class="text-end w-100 m-0">
+                -بمقتضى المرسوم التنفيذي رقم 13-77 المؤرخ في 18 ربيع الأول 1434 الموافق لـ 30 يناير 2013, الذي يحدد صلاحيات وزير التعليم العالي والبحث العلمي.
+            </p>
+            <p class="text-end w-100 m-0">
+                -بمقتضى المرسوم التنفيذي رقم 16-176 المؤرخ في 09 رمضان 1437 الموافق لـ 14 يونيو 2016, الذي يحدد القانون الأساسي النموذجي للمدارس العليا.
+            </p>
+            <p class="text-end w-100 m-0">
+                -بمقتضى المرسوم التنفيذي رقم 08-209 المؤرخ في 11 رجب 1429 الموافق لـ 14 يوليو 2008, والمتضمن تحويل المدرسة العليا للأساتذة بالقبة إلى مدرسة خارج الجامعة.
+            </p>
+            <p class="text-end w-100 m-0">
+                -بمقتضى المرسوم التنفيذي رقم 08-211 المؤرخ في 11 رجب 1429 الموافق لـ 14 يوليو 2008, والمتضمن تحويل المدرسة العليا للأساتذة ببوزريعة إلى مدرسة خارج الجامعة.
+            </p>
+            <p class="text-end w-100 m-0">
+                -بمقتضى المرسوم التنفيذي رقم 08-212 المؤرخ في 11 رجب 1429 الموافق لـ 14 يوليو 2008, والمتضمن تحويل المدرسة العليا للأساتذة بقسنطينة إلى مدرسة خارج الجامعة.
+            </p>
+            <p class="text-end w-100 m-0">
+                -بمقتضى المرسوم التنفيذي رقم 08-315 المؤرخ في 11 شوال 1429 الموافق لـ 11 أكتوبر 2008, والمتضمن القانون الأساسي الخاص بالموظفين المنتمين للأسلاك الخاصة بالتربية الوطنية, المعدل والمتمم.
+            </p>
+            <p class="text-end w-100 m-0">
+                - بمقتضى المرسوم التنفيذي رقم 09-254 المؤرخ في 19 شعبان 1430 الموافق لـ 10 غشت 2009, والمتضمن إنشاء مدرسة خارج الجامعة للتعليم التكنولوجي بسكيكدة.
+            </p>
+            <p class="text-end w-100 m-0">
+                -بمقتضى المرسوم التنفيذي رقم 11-301 المؤرخ في 22 رمضان 1432 الموافق لـ 22 غشت 2011, والمتضمن إنشاء مدرسة عليا للأساتذة بالأغواط.
+            </p>
+            <p class="text-end w-100 m-0">
+                -بمقتضى المرسوم التنفيذي رقم 14-230 المؤرخ في 29 شوال 1435 الموافق لـ 25 غشت 2014, والمتضمن إنشاء مدرسة عليا للأساتذة بوهران.
+            </p>
+            <p class="text-end w-100 m-0">
+                -بمقتضى المرسوم التنفيذي رقم 14-231 المؤرخ في 29 شوال 1435 الموافق لـ 25 غشت 2014, والمتضمن إنشاء مدرسة عليا للأساتذة بمستغانم.
+            </p>
+            <p class="text-end w-100 m-0">
+                -بمقتضى المرسوم التنفيذي رقم 15-182 المؤرخ في 24 رمضان 1436 الموافق لـ 11 يوليو 2015, والمتضمن إنشاء مدرسة عليا للأساتذة ببشار.
+            </p>
+            <p class="text-end w-100 m-0">
+                -بمقتضى المرسوم التنفيذي رقم 15-183 المؤرخ في 24 رمضان 1436 الموافق لـ 11 يوليو 2015, والمتضمن إنشاء مدرسة عليا للأساتذة بالعلمة ولاية سطيف.
+            </p>
+            <p class="text-end w-100 m-0">
+                -بمقتضى المرسوم التنفيذي رقم 15-184 المؤرخ في 24 رمضان 1436 الموافق لـ 11 يوليو 2015, والمتضمن إنشاء مدرسة عليا للأساتذة بورقلة.
+            </p>
+            <p class="text-end w-100 m-0">
+                -بمقتضى المرسوم التنفيذي رقم 15-187 المؤرخ في 29 رمضان 1436 الموافق لـ 16 يوليو 2015, والمتضمن إنشاء مدرسة عليا للأساتذة ببوسعادة ولاية المسيلة.
+            </p>
+            <p class="text-end w-100 m-0">
+                -بمقتضى المرسوم التنفيذي رقم 20-194 المؤرخ في 04 ذي الحجة 1441 الموافق لـ 25 يوليو 2020, والمتعلق بتكوين الموظفين والأعوان العموميين وتحسين مستواهم في المؤسسات والإدارات العمومية.
+            </p>
+            <p class="text-end w-100 m-0">
+                -القرار الوزاري المشترك رقم 003 المؤرخ في 25 أوت 2021, الذي يحدد الاحتياجات المتوقعة لقطاع التربية الوطنية من حيث الأساتذة وعدد المقاعد البيداغوجية المفتوحة في المدارس العليا للأساتذة.
+            </p>
+            <p class="text-end w-100 m-0">
+                -وبمقتضى المنشور الوزاري رقم 01 المؤرخ في 19 ذي القعدة 1442هـ الموافق لـ 29 جوان 2021م, المتعلق بالتسجيل الأولي وتوجيه حاملي شهادة البكالوريا بعنوان السنة الجامعية 2022/2021.
+            </p>
+        </div>
+        <p class="my-1" style="font-size: 18px;">يلتزمان بما يأتي:</p>
+        {% if student_contrat.sexe == 'أنثى' %}
+        <div class="decret me-3">
+            <p class="text-end w-100 m-0">
+                <u>المادة الأولى:</u> تلتزم الطالبة المتعاقدة: <span class="name fs-5 mx-3"><strong>{{ student_contrat.last_name }} {{ student_contrat.first_name }}</strong></span> الرتبة: <span class="fs-6 ms-3">{{ student_contrat.category }}</span> التخصص: <span class="fs-6">{{ student_contrat.branch }}</span>
+            </p>
+            <p class="text-end w-100 m-0 me-5">
+               بمتابعة الدروس بالمدرسة العليا للأساتذة:  <span class="fs-6 mx-3">الشيخ محمد البشير الابراهيمي بالقبة</span> للحصول على شهادة التخرج: <span class="fs-6 ms-3">{{ student_contrat.category }}</span>
+            </p>
+            <p class="text-end w-100 m-0">
+                <u>المادة الثانية:</u> يمكن للطالبة المتعاقدة خلال فترة تكوينها تكرار السنة في حدود: -سنة (1) بالنسبة لأساتذة المدرسة الإبتدائية.
+            </p>
+            <p class="text-end w-100 m-0 me-5">
+                -سنتين (2) على الأكثر بالنسبة لأساتذة التعليم المتوسط وأساتذة التعليم الثانوي, شريطة ألا يكون في نفس السنة البيداغوجية.
+             </p>
+            <p class="text-end w-100 m-0">
+                <u>المادة الثالثة:</u> تلتزم الطالبة المتعاقدة خلال فترة تكوينها باحترام القانون الداخلي للمدرسة العليا للأساتذة
+            </p>
+            <p class="text-end w-100 m-0">
+                <u>المادة الرابعة:</u> تلتزم وزارة التربية الوطنية بتعيين الطالبة المتعاقدة عند نهاية تكوينها.
+            </p>
+            <p class="text-end w-100 m-0">
+                <u>المادة الخامسة:</u> يجب على المعنية بالأمر الإلتحاق بمنصب تعيينها بعد نهاية التكوين في أجل شهر (1) ابتداء من تاريخ استلامها مقرر التعيين.
+            </p>
+            <p class="text-end w-100 m-0">
+                <u>المادة السادسة:</u> تلتزم الطالبة المتعاقدة وفقا لأحكام التنظيم الجاري به العمل بخدمة وزارة التربية الوطنية مدة: -سبع سنوات بالنسبة لأساتذة المدرسة الإبتدائية.
+            </p>
+            <p class="text-end w-100 m-0 me-5">
+                -تسع (9) سنوات بالنسبة لأساتذة التعليم المتوسط . -إحدى عشر (11) سنة بالنسبة لأساتذة التعليم الثانوي.
+            </p>
+            <p class="text-end w-100 m-0">
+                <u>المادة السابعة:</u> تفقد الطالبة المتعاقدة حقها في ضمان المنصب في حالة: - الانقطاع عن الدراسة. - الطرد لإجراء تأديبي. - عدم الالتحاق بمنصب التعيين.
+            </p>       
+        </div>
+       
+            <p class="text-end mx-5 mt-2" style="font-size:15px;">توقع المتعاقدة بعد كتابة عبارة "قرأت وقبلت"</p>             
+        {% else %}
+        <div class="decret me-3">
+            <p class="text-end w-100 m-0">
+                <u>المادة الأولى:</u> يلتزم الطالب المتعاقد: <span class="name fs-5 mx-3"><strong>{{ student_contrat.last_name }} {{ student_contrat.first_name }}</strong></span> الرتبة: <span class="fs-6 ms-3">{{ student_contrat.category }}</span> التخصص: <span class="fs-6">{{ student_contrat.branch }}</span>
+            </p>
+            <p class="text-end w-100 m-0 me-5">
+               بمتابعة الدروس بالمدرسة العليا للأساتذة:  <span class="fs-6 mx-3">الشيخ محمد البشير الابراهيمي بالقبة</span> للحصول على شهادة التخرج: <span class="fs-6 ms-3">{{ student_contrat.category }}</span>
+            </p>
+            <p class="text-end w-100 m-0">
+                <u>المادة الثانية:</u> يمكن للطالب المتعاقد خلال فترة تكوينه تكرار السنة في حدود: -سنة (1) بالنسبة لأساتذة المدرسة الإبتدائية.
+            </p>
+            <p class="text-end w-100 m-0 me-5">
+                -سنتين (2) على الأكثر بالنسبة لأساتذة التعليم المتوسط وأساتذة التعليم الثانوي, شريطة ألا يكون في نفس السنة البيداغوجية.
+             </p>
+            <p class="text-end w-100 m-0">
+                <u>المادة الثالثة:</u> يلتزم الطالب المتعاقد خلال فترة تكوينه باحترام القانون الداخلي للمدرسة العليا للأساتذة
+            </p>
+            <p class="text-end w-100 m-0">
+                <u>المادة الرابعة:</u> تلتزم وزارة التربية الوطنية بتعيين الطالب المتعاقد عند نهاية تكوينه.
+            </p>
+            <p class="text-end w-100 m-0">
+                <u>المادة الخامسة:</u> يجب على المعني بالأمر الإلتحاق بمنصب تعيينه بعد نهاية التكوين في أجل شهر (1) ابتداء من تاريخ استلامه مقرر التعيين.
+            </p>
+            <p class="text-end w-100 m-0">
+                <u>المادة السادسة:</u> يلتزم الطالب المتعاقد وفقا لأحكام التنظيم الجاري به العمل بخدمة وزارة التربية الوطنية مدة: -سبع سنوات بالنسبة لأساتذة المدرسة الإبتدائية.
+            </p>
+            <p class="text-end w-100 m-0 me-5">
+                -تسع (9) سنوات بالنسبة لأساتذة التعليم المتوسط . -إحدى عشر (11) سنة بالنسبة لأساتذة التعليم الثانوي.
+            </p>
+            <p class="text-end w-100 m-0">
+                <u>المادة السابعة:</u> يفقد الطالب المتعاقد حقه في ضمان المنصب في حالة: - الانقطاع عن الدراسة. - الطرد لإجراء تأديبي. - عدم الالتحاق بمنصب التعيين.
+            </p>       
+        </div>
+       
+            <p class="text-end mx-5 mt-2" style="font-size:15px;">يوقع المتعاقد بعد كتابة عبارة "قرأت وقبلت"</p>             
+        {% endif %}       
+        <div class="row  decret mt-0">
+           <div class="col-md-6 pe-5 text-end pt-0 mt-0 w-50" style="border-left: 2px solid black; height: 40mm;">
+              <p class="me-5 mt-0">مع المصادقة على التوقيع</p>
+           </div>
+           <div class="col-md-6 text-start pt-0 mt-0 w-25" style="">
+            <p class="me-5">عن وزير التربية الوطنية</p>
+           </div>
+        </div>
+    </div>
+        
+        <script src="" async defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    </body>
+</html>

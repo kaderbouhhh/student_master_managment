@@ -1,0 +1,130 @@
+<!-- Add Memoire Modal -->
+<div class="modal fade" id="addMemoireModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="addMemoireForm" method="POST" action="{% url 'memoire_add' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-header bg-success d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="text-light">إضافة مذكرة جديدة</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    {{ form.as_p }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-success">إضافة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Upload Memoire File Modal -->
+<div class="modal fade" id="uploadMemoireFileModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="uploadMemoireFileForm" method="POST" action="{% url 'upload_memoire_file' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="memoire_id" id="memoireIdInput">  <!-- Hidden input for memoire ID -->
+                <div class="modal-header bg-primary d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="modal-title text-light">رفع ملف المذكرة</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <label for="memoireFile" class="form-label">اختر ملف المذكرة:</label>
+                    <input type="file" name="memoire_file" id="memoireFile" class="form-control" accept=".pdf">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-success">رفع الملف</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Memoire Modal -->
+<div class="modal fade" id="editMemoireModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="editMemoireForm" method="POST">
+                {% csrf_token %}
+                <div class="modal-header bg-warning d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="text-light">تعديل المذكرة</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editMemoireId" name="id">
+                    <div class="form-group">
+                        <label for="editMemoireSpeciality">التخصص</label>
+                        {{ form.speciality }}
+                    </div>
+                    <div class="form-group">
+                        <label for="editMemoireStudent">الطالب</label>
+                        {{ form.student }}
+                    </div>
+                    <div class="form-group">
+                        <label for="editMemoireCoeficient">المعامل</label>
+                        <input type="number" id="editMemoireCoeficient" name="coeficient" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="editMemoireCredit">الرصيد</label>
+                        <input type="number" id="editMemoireCredit" name="credit" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="editMemoireGrade">الدرجة</label>
+                        <input type="number" step="0.01" id="editMemoireGrade" name="grade" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="editMemoireAcademicYear">السنة الأكاديمية</label>
+                         {{ form.academic_year }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-warning">تحديث</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Memoire Modal -->
+<div class="modal fade" id="deleteMemoireModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="deleteMemoireForm" method="POST">
+                {% csrf_token %}
+                <div class="modal-header bg-danger d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-dark" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="text-light">حذف المذكرة</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <p>هل أنت متأكد أنك تريد حذف هذه المذكرة؟</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-danger">حذف</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

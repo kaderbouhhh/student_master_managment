@@ -1,0 +1,21 @@
+<tr id="subject-{{ subject.id }}">
+    <td>{{ subject.name }}</td>
+    <td>{{ subject.credit }}</td>
+    <td>{{ subject.coeficient }}</td>
+    <td>{{ subject.unity }}</td>
+    <td>{{ subject.unity.pedagogic_year }}</td>
+    <td>
+        <button class="btn btn-transparent btn-sm edit-subject-btn text-warning" 
+                data-id="{{ subject.id }}" 
+                data-name="{{ subject.name }}" 
+                data-credit="{{ subject.credit }}" 
+                data-coeficient="{{ subject.coeficient }}" 
+                data-unity="{{ subject.unity.id }}" 
+                data-toggle="modal" 
+                data-target="#editSubjectModal"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-transparent btn-sm delete-subject-btn text-danger" 
+                data-id="{{ subject.id }}" 
+                data-toggle="modal" 
+                data-target="#deleteSubjectModal"><i class="fas fa-trash"></i></button>
+    </td>
+</tr>

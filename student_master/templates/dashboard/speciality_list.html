@@ -1,0 +1,106 @@
+{% extends 'attendance/dashboard.html' %}
+
+{% block dashboard_content %}
+<div class="d-flex justify-content-between align-items-center p-3 mb-5 mt-1 border-bottom">
+    <h3>إدارة التخصصـات</h3>
+    <button type="button" class="btn btn-success ml-2" data-toggle="modal" data-target="#addSpecialityModal">
+        <i class="fas fa-plus"></i> إنشاء تخصص جديد
+    </button>
+</div>
+
+<table class="table table-bordered mt-4">
+    <thead class="text-right bg-dark">
+        <tr>
+            <td class="text-light fw-bold"> اسم التخصص</th>
+            <td class="text-light fw-bold"> Nom de Specialité</th>
+            <td class="text-light fw-bold">الشعبة [الميدان]</th>
+            <td class="text-light fw-bold">الإجراءات</th>
+        </tr>
+    </thead>
+    <tbody id="specialityTableBody">
+        {% for speciality in specialities %}
+        {% include 'dashboard/partials/speciality_row.html' %}
+        {% endfor %}
+    </tbody>
+</table>
+
+{% include 'dashboard/modals/speciality_modals.html' %}
+
+<script>
+    $(document).ready(function() {
+        // CSRF setup
+        $.ajaxSetup({
+            headers: { "X-CSRFToken": "{{ csrf_token }}" }
+        });
+
+        // Add Speciality
+        $('#addSpecialityForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#addSpecialityModal').modal('hide');
+                    $('#specialityTableBody').append(response.new_row);
+                },
+                error: function() {
+                    alert("حدث خطأ أثناء إضافة التخصص.");
+                }
+            });
+        });
+
+        // Edit Speciality Modal
+        $(document).on('click', '.edit-speciality-btn', function() {
+            const id = $(this).data('id');
+            const name = $(this).data('name');
+            const namen = $(this).data('namen');
+            const filiere = $(this).data('filiere');
+            $('#editSpecialityId').val(id);
+            $('#editSpecialityName').val(name);
+            $('#editSpecialityNameEn').val(namen);
+            $('#editSpecialityFiliere').val(filiere);
+            $('#editSpecialityForm').attr('action', `/specialities/edit/${id}/`);
+        });
+
+        // Edit Speciality
+        $('#editSpecialityForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#editSpecialityModal').modal('hide');
+                    $('#speciality-' + response.speciality_id).replaceWith(response.updated_row);
+                },
+                error: function() {
+                    alert("حدث خطأ أثناء تعديل التخصص.");
+                }
+            });
+        });
+
+        // Delete Speciality Modal
+        $(document).on('click', '.delete-speciality-btn', function() {
+            const id = $(this).data('id');
+            $('#deleteSpecialityForm').attr('action', `/specialities/delete/${id}/`);
+        });
+
+        // Delete Speciality
+        $('#deleteSpecialityForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                success: function(response) {
+                    $('#deleteSpecialityModal').modal('hide');
+                    $('#speciality-' + response.speciality_id).remove();
+                },
+                error: function() {
+                    alert("حدث خطأ أثناء حذف التخصص.");
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

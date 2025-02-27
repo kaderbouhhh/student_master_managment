@@ -1,0 +1,596 @@
+{% load static %}
+<html dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}شهادة ماستر _ {{ deliberation.student.last_name }} {{ deliberation.student.first_name }}{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQBwE3fJES+JjcKb4xQAOjq13zYlb2xLx6q8aBYTfFw1ERhnIjJB3L+xZ" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet"> <title>Master Diplome Example</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&family=Lateef:wght@200;300;400;500;600;700;800&family=Noto+Sans+Arabic:wght@100..900&family=Oswald:wght@200..700&family=Readex+Pro:wght@160..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lateef:wght@200;300;400;500;600;700;800&family=Noto+Sans+Arabic:wght@100..900&family=Readex+Pro:wght@160..700&display=swap" rel="stylesheet">
+ <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <style>
+
+  body * {
+    margin: 0;
+    padding: 0;
+  }
+    /* General settings for the diplome div */
+    .diplome {
+      background-image: url('{% static 'attendance/dip_img.png' %}'); /* Use the path to your image */
+      background-size: cover; /* Ensures the image covers the entire div */
+      background-position: center; /* Centers the image */
+      background-repeat: no-repeat; /* Prevents the image from repeating */
+      width: 210mm; /* A4 size in pixels (595px x 842px) */
+      height: 297mm; /* A4 size in pixels */
+      margin: auto !important; /* Center horizontally */
+      padding: auto !important;
+      writing-mode: vertical-rl; /* Make text vertical */  
+      font-family: "Abril Fatface", serif;
+      font-weight: 400;
+      font-style: normal;
+      
+    }
+    .date {
+      position: absolute;
+      direction: rtl;
+      margin-right: 72.1mm;
+      margin-top: 190mm;
+      font-size: 13px;
+      font-weight: bold;
+      }
+     .arab_name {      
+      position: absolute;
+      direction: rtl;
+      height:83mm;
+      text-align: right;
+      margin-bottom:60mm;
+      margin-right: 74.5mm;
+      font-family: Lateef , serif;
+      font-size: 27px;
+      font-weight: 900;
+      font-style: normal;
+      white-space: nowrap;
+      }
+     .tarikh_milad {
+      direction: rtl;
+      position: absolute;
+      margin-top:217mm;
+      margin-right: 84.2mm;
+      font-size: 13px;
+      font-weight: bold;
+      }
+     .makan_milad {
+      position: absolute;
+      direction: rtl;
+      height:53mm;
+      text-align: right;
+      margin-bottom:100mm;
+      margin-right: 83.2mm;
+      font-size: 18px;
+      font-weight: bold;
+      white-space: nowrap;
+      }
+     .midan {
+      position: absolute;
+      direction: rtl;
+      height:83mm;
+      text-align: right;
+      margin-bottom:55mm;
+      margin-right: 100mm;
+      font-size: 20px;
+      font-weight: bold;
+      white-space: nowrap;
+      }
+     .choaba {
+      position: absolute;
+      direction: rtl;
+      height:83mm;
+      text-align: right;
+      margin-bottom:55mm;
+      margin-right: 106.9mm;
+      font-size: 20px;
+      font-weight: bold;
+      white-space: nowrap;          /* منع كسر النص */
+         /* يجعل النص العربي يظهر صحيحًا عموديًا */
+}
+
+     .takhassos {
+      direction: rtl;
+      position: absolute;
+      direction: rtl;
+      height:83mm;
+      text-align: right;
+      margin-bottom:55mm;
+      margin-right: 114.2mm;
+      font-size: 20px;
+      font-weight: bold;
+      white-space: nowrap;
+      }
+     .madrassa {
+      direction: rtl;
+      position: absolute;
+      margin-top:190mm;
+      margin-right: 123.4mm;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+      white-space: nowrap;
+      }
+     .makan_isdar {
+      direction: rtl;
+      position: absolute;
+      margin-top:169mm;
+      margin-right: 130.5mm;
+      font-size: 16px;
+      font-weight: bold;
+      white-space: nowrap;
+      }
+     .english_name {
+      position: absolute;
+      margin-right: 77.3mm;
+      margin-top: 68mm;
+      font-family: Oswald serif;
+      font-size: 18px;
+      font-weight: 600;
+      font-style: italic;
+      white-space: nowrap; 
+      }
+     .date_naiss {
+      position: absolute;
+      margin-right: 86mm;
+      margin-top: 55mm;
+      font-size: 13px;
+      font-weight: bold; 
+      }
+      .lieu_naiss {
+      position: absolute;
+      margin-right: 86mm;
+      margin-top: 93mm;
+      font-size: 12px;
+      font-weight: bold; 
+      white-space: nowrap;
+      }
+     .domain {
+      position: absolute;
+      margin-right: 101.8mm;
+      margin-top: 51mm;
+      font-size: 13px;
+      font-weight: bold; 
+      white-space: nowrap;
+      }
+     .filiere {
+      position: absolute;
+      margin-right: 109.1mm;
+      margin-top: 51mm;
+      font-size: 13px;
+      font-weight: bold; 
+      white-space: nowrap;
+     
+      }
+     .speciality {
+      position: absolute;
+      margin-right: 116.5mm;
+      margin-top: 51mm;
+      font-size: 13px;
+      font-weight: bold;
+      white-space: nowrap; 
+      }
+     .entreprise {
+      position: absolute;
+      margin-right: 124.1mm;
+      margin-top: 92mm;
+      font-size: 11px; 
+      font-weight: bold;     
+      text-align: center;
+      white-space: nowrap;
+      }
+     .date_edit {
+      position: absolute;
+      margin-right: 131.5mm;
+      margin-top: 117mm;
+      font-size: 13px;  
+      font-weight: bold;    
+      }
+     .number_edit {
+      position: absolute;
+      margin-right: 131.5mm;
+      margin-top: 73mm;
+      font-size: 13px;  
+      font-weight: bold;  
+      white-space: nowrap;  
+      }
+
+/* Print-specific styles */
+    @media print {
+      body * {
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Ensure diplome is visible with background and text */
+      .diplome {
+        visibility: visible !important; /* Make sure diplome div is visible */
+        background-image: url('{% static 'attendance/dip_img.png' %}') !important; /* Ensure background is applied during print */
+        width: 100%;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        -webkit-print-color-adjust: exact; /* Ensures accurate printing of background colors/images */
+        
+ 
+        color: black !important; /* Make sure text color is black */
+        font-family: 'Unna', serif !important; /* Ensure font is correct */
+        position: absolute !important; /* Correct positioning for child elements */ width: 210mm; /* A4 size in pixels (595px x 842px) */
+        width: 210mm; /* A4 size in pixels (595px x 842px) */
+        height: 297mm; /* A4 size in pixels */
+        padding: auto !important;
+        margin: auto !important;
+      }
+
+      /* Make sure text is visible and positioned correctly */
+      .diplome * {
+        visibility: visible !important; /* Ensure text inside diplome is visible */
+       
+      }
+
+      .date {
+        position: absolute;
+        direction: rtl;
+        margin-right: 71.8mm !important;
+        margin-bottom: 90mm;
+        font-size: 12px;
+        font-weight: bold;
+        }
+       .arab_name {
+        direction: rtl;
+        position: absolute;
+        margin-bottom:65mm;
+        margin-right: 74.5mm !important;
+        font-size: 28px;
+        font-weight: bold;
+        white-space: nowrap;
+        }
+       .tarikh_milad {
+        direction: rtl;
+        position: absolute;
+        margin-bottom:63.5mm;
+        margin-right: 84.3mm !important;
+        font-size: 12px;
+        font-weight: bold;
+        }
+       .makan_milad {
+        direction: rtl;
+        position: absolute;
+        margin-bottom:102mm;
+        margin-right: 82.8mm !important;
+        font-size: 17px;
+        font-weight: bold;
+        white-space: nowrap;
+        }
+       .midan {
+        direction: rtl;
+        position: absolute;
+        margin-bottom:59mm !important;
+        margin-right: 100.2mm !important;
+        font-size: 16px !important;
+        font-weight: bold !important;
+        white-space: nowrap;
+        }
+       .choaba {
+                  /* الاتجاه من اليمين إلى اليسار */
+        direction: rtl;
+        position: absolute;
+        margin-bottom:59mm !important;
+        margin-right: 107.4mm !important;
+        font-size: 16px !important;
+        font-weight: bold !important;
+        white-space: nowrap;          /* منع كسر النص */
+           /* يجعل النص العربي يظهر صحيحًا عموديًا */
+  }
+  
+       .takhassos {
+        direction: rtl;
+        position: absolute;
+        margin-bottom:59mm !important;
+        margin-right: 114.6mm !important;
+        font-size: 16px !important;
+        font-weight: bold !important;
+        white-space: nowrap;
+        }
+       .madrassa {
+        direction: rtl;
+        position: absolute;
+        margin-bottom:80mm;
+        margin-right: 123mm !important;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        white-space: nowrap;
+        }
+       .makan_isdar {
+        direction: rtl;
+        position: absolute;
+        margin-bottom:121mm;
+        margin-right: 129.7mm !important;
+        font-size: 16px;
+        font-weight: bold;
+        white-space: nowrap;
+        }
+       .english_name {
+        position: absolute;
+        direction: ltr;
+        height:83mm;
+        text-align: left;
+        margin-right: 77.7mm;
+        margin-bottom: 150mm;
+        font-size: 16px;
+        font-weight: bold;
+        white-space: nowrap; 
+        }
+       .date_naiss {
+        position: absolute;
+        margin-right: 86.5mm !important;
+        margin-bottom: 221mm;
+        font-size: 12px;
+        font-weight: bold; 
+        }
+        .lieu_naiss {
+        position: absolute;
+        direction: ltr;
+        height:57mm;
+        text-align: left;
+        margin-right: 85.8mm;
+        margin-bottom: 150mm;
+        font-size: 12px;
+        font-weight: bold; 
+        white-space: nowrap;
+        }
+       .domain {
+        position: absolute;
+        direction: ltr;
+        height:97mm;
+        margin-right: 102.6mm !important;
+        margin-bottom: 150mm;
+        text-align: left;
+        font-size: 12px;
+        font-weight: bold !important; 
+        white-space: nowrap;
+        }
+       .filiere {
+        position: absolute;
+        direction: ltr;
+        height:97mm;
+        text-align: left;
+        margin-right: 109.7mm !important;
+        margin-bottom: 150mm;
+        font-size: 12px;
+        font-weight: bold !important; 
+        white-space: nowrap;
+       
+        }
+       .speciality {
+        position: absolute;
+        direction: ltr;
+        height:97mm;
+        text-align: left;
+        margin-right: 116.8mm !important;
+        margin-bottom: 150mm;
+        font-size: 12px;
+        font-weight: bold !important;
+        white-space: nowrap; 
+        }
+       .entreprise {
+        position: absolute;
+        direction: ltr;
+        height:82mm;
+        text-align: left;
+        margin-right: 124.2mm;
+        margin-bottom: 125.2mm;
+        font-size: 11px; 
+        font-weight: bold; 
+        white-space: nowrap;
+        }
+       .date_edit {
+        position: absolute;
+        margin-right: 131.4mm !important;
+        margin-bottom: 162mm;
+        font-size: 12px; 
+        font-weight: bold;     
+        }
+       .number_edit {
+        position: absolute;
+        margin-right: 131.2mm;
+        margin-bottom: 203mm;
+        width: 55mm;
+        text-align: right;
+        white-space: nowrap; 
+        font-size: 13px; 
+        font-weight: bold;     
+        }
+  
+    }
+  </style>
+
+ <!-- Add jsPDF and html2canvas -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+</head>
+
+   <body>
+        <!-- Diploma div -->
+  <div id="diplome" class="diplome">    
+     <div class="date">
+          {{ deliberation.decision_date|date:"Y/m/d" }}
+     </div>
+     <div class="arab_name">
+      {{ deliberation.student.last_name }} {{ deliberation.student.first_name }} 
+      </div>
+      <div class="tarikh_milad">
+        {{ deliberation.student.birth_day|date:"Y/m/d" }}
+      </div>
+     <div class="makan_milad">
+      {{ deliberation.student.birth_place }} - {{ deliberation.student.birth_wilaya }}
+      </div>
+     <div class="midan">
+      {{ deliberation.speciality.filiere.domain.name }}
+      </div>
+     <div class="choaba">
+      {{ deliberation.speciality.filiere.name }}
+      </div>
+     <div class="takhassos">
+      {{ deliberation.speciality.name }}
+      </div>
+     <div class="madrassa">
+   المدرسة العليا للأساتذة 
+        <br>الشيخ محمد البشير <br>الابراهيمـي <br>القبة-الجزائر
+      </div>
+     <div class="makan_isdar">
+         القبــة
+      </div>
+     <div class="english_name">
+      {{ deliberation.student.last_name_en }} {{ deliberation.student.first_name_en }}
+      </div>
+      <div class="date_naiss">
+        {{ deliberation.student.birth_day|date:"d-m-Y" }}
+      </div>
+      <div class="lieu_naiss">
+        {{ deliberation.student.birth_place_en }} - {{ deliberation.student.birth_wilaya_en }}
+      </div>
+      <div class="domain">
+        {{ deliberation.speciality.filiere.domain.name_en }}
+      </div>
+      <div class="filiere">
+        {{ deliberation.speciality.filiere.name_en }}
+      </div>
+      <div class="speciality">
+        {{ deliberation.speciality.name_en }}
+      </div>
+      <div class="entreprise">
+         Ecole Normale Supérieure de Kouba-Alger Algérie
+      </div>
+      <div class="date_edit">
+        {{ now|date:"Y/m/d" }} 
+      </div>
+      <div class="number_edit">
+      م.ع.أ/م-0{{ deliberation.diploma_number }}
+      </div>
+  </div>
+
+   <!-- Buttons -->
+   <div class="d-flex justify-content-between">
+    <button id="toggleButton" class="btn btn-primary">حذف الخلفية</button>
+    <button id="printDiploma" class="btn btn-primary">طباعة</button>
+    {% if user_is_admin %}
+       <button id="Diploma_issud" class="btn btn-primary" data-deliberation-id="{{ deliberation.id }}">تسليم الشهادة</button>
+    {% endif %}
+
+  </div>
+
+
+ 
+<script>
+  const toggleButton = document.getElementById('toggleButton');
+  const diplome = document.getElementById('diplome');
+  const printButton = document.getElementById('printDiploma');
+  
+
+  // Toggle Background Image
+  let isBackgroundVisible = true;
+  toggleButton.addEventListener('click', () => {
+    if (isBackgroundVisible) {
+      diplome.style.backgroundImage = 'none';
+      toggleButton.textContent = 'إضافة الخلفية';
+    } else {
+      diplome.style.backgroundImage = "url('{% static 'attendance/dip_img.png' %}')";
+      toggleButton.textContent = 'حذف الخلفية';
+    }
+    isBackgroundVisible = !isBackgroundVisible;
+  });
+
+  // Print the Diploma
+  printButton.addEventListener('click', () => {
+    window.print();
+  });
+
+  document.getElementById('Diploma_issud').addEventListener('click', function () {
+    const deliberationId = this.getAttribute('data-deliberation-id'); // Get deliberation ID from button
+
+    // Show SweetAlert2 confirmation dialog
+    Swal.fire({
+        title: 'هل أنت متأكد؟',
+        text: "سيتم تسليم الشهادة ولن تتمكن من تسليمها مرة أخرى إلا بإذن مدير المنصة!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'نعم، تأكيد',
+        cancelButtonText: 'إلغاء'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Send AJAX POST request to update diploma_issued
+            fetch(`/issue_diploma/${deliberationId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'), // Include CSRF token
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        Swal.fire(
+                            'تمت العملية!',
+                            data.message,
+                            'success'
+                        );
+                    } else {
+                        Swal.fire(
+                            'خطأ!',
+                            data.message,
+                            'error'
+                        );
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    Swal.fire(
+                        'خطأ!',
+                        'حدث خطأ أثناء الاتصال بالخادم.',
+                        'error'
+                    );
+                });
+        }
+    });
+});
+
+// Utility function to get CSRF token
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+</script>
+</body>
+</html>

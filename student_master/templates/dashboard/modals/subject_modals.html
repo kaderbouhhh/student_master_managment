@@ -1,0 +1,97 @@
+<!-- Add Subject Modal -->
+<div class="modal fade" id="addSubjectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="addSubjectForm" method="POST" action="{% url 'subject_add' %}">
+                {% csrf_token %}
+                <div class="modal-header bg-success d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="text-light">إضافة مادة جديدة</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    {{ form.as_p }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-success">إضافة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Subject Modal -->
+<div class="modal fade" id="editSubjectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editSubjectForm" method="POST">
+                {% csrf_token %}
+                <div class="modal-header bg-warning d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="text-light">تعديل المادة</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editSubjectId" name="id">
+                    <div class="form-group">
+                        <label for="editSubjectName">اسم المادة</label>
+                        <input type="text" id="editSubjectName" name="name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="editSubjectCredit">الرصيد</label>
+                        <input type="number" id="editSubjectCredit" name="credit" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="editSubjectCoeficient">المعامل</label>
+                        <input type="number" id="editSubjectCoeficient" name="coeficient" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="editSubjectUnity">الوحدة</label>
+                        <select id="editSubjectUnity" name="unity" class="form-control">
+                            {% for unity in unities %}
+                            <option value="{{ unity.id }}">{{ unity }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-warning">تحديث</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Subject Modal -->
+<div class="modal fade" id="deleteSubjectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="deleteSubjectForm" method="POST">
+                {% csrf_token %}
+                <div class="modal-header bg-danger d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-dark" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="text-light">حذف المادة</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <p>هل أنت متأكد أنك تريد حذف هذه المادة؟</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-danger">حذف</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

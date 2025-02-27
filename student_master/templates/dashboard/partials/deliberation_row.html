@@ -1,0 +1,72 @@
+<tr id="deliberation-{{ deliberation.id }}">
+    <td>{{ deliberation.student }}</td>
+    <td>{{ deliberation.pedagogic_year.year_name }}</td>
+    <td style="max-width:150px;">{{ deliberation.speciality.name }}</td>
+    <td>{{ deliberation.average_grade }}</td>
+    <td>{{ deliberation.result_status }}</td>
+    <td>{{ deliberation.mention }}</td>
+    <td>{{ deliberation.decision_date }}</td>
+    <td>{{ deliberation.diploma_number }}</td>
+    <td>
+        <div class="d-flex justify-content-between">
+        <div>
+            {% if deliberation.transcript_issued == 0 %}      
+        <a class="btn btn-bg-transparent btn-sm transcript-deliberation-btn text-primary" 
+           href="{% url 'transcript' id=deliberation.id %}" target="_blank">
+           <i class="fas fa-file-alt icon"></i> كشف النقاط
+        </a>
+        {% else %}
+        <a class="btn btn-bg-transparent btn-sm transcript-deliberation-btn text-muted">
+           <i class="fas fa-file-alt icon"></i> تم تسليم كشف النقاط
+        </a>
+        {% endif %}
+    </div>
+        {% if deliberation.result_status == 'ناجح' and deliberation.pedagogic_year.year_name == 'الثانية' %}
+     <div> 
+        {% if deliberation.diploma_issued == 0 %}  
+        <a class="btn btn-bg-transparent btn-sm diploma-deliberation-btn text-success" 
+           href="{% url 'diploma' id=deliberation.id %}" target="_blank">
+           <i class="fas fa-scroll icon"></i> شهادة الماستر
+        </a>
+        {% else %}
+        <a class="btn btn-bg-transparent btn-sm mx-0 diploma-deliberation-btn text-muted">
+            تم تسليم الشهادة
+        </a>
+    </div>
+    <div>
+        <a class="btn btn-bg-transparent btn-sm mx-0 diploma-deliberation-btn text-muted">
+       بتاريخ : {{ deliberation.issued_date }}
+        </a>
+        {% endif %}
+    </div>  
+        {% endif %}
+        {% if deliberation.result_status == 'ناجح' and deliberation.pedagogic_year.year_name == 'الثانية' %}
+        <div> 
+           <a class="btn btn-bg-transparent btn-sm diploma-deliberation-btn text-success" 
+              href="{% url 'conduct' id=deliberation.id %}" target="_blank">
+              <i class="fas fa-scroll icon"></i> شهادة حسن السيرة
+           </a>
+        </div>   
+       {% endif %}
+        {% if deliberation.diploma_issued == 0 %} 
+        <div class="d-flex justify-content-between">
+            <button class="btn btn-bg-transparent btn-sm edit-deliberation-btn text-warning"
+                    data-id="{{ deliberation.id }}"                
+                    data-toggle="modal"
+                    data-target="#editDeliberationModal">
+                    <i class="fas fa-edit"></i>
+            </button>
+           
+            <button class="btn btn-bg-transparent btn-sm delete-deliberation-btn text-danger"
+                    data-id="{{ deliberation.id }}"
+                    data-toggle="modal"
+                    data-target="#deleteDeliberationModal">
+                    <i class="fas fa-trash"></i>
+            </button>
+        </div>
+        {% endif %}
+    </div>   
+    </td>
+</tr>
+
+ 

@@ -1,0 +1,93 @@
+<!-- Add Speciality Modal -->
+<div class="modal fade" id="addSpecialityModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="addSpecialityForm" method="POST" action="{% url 'speciality_add' %}">
+                {% csrf_token %}
+                <div class="modal-header bg-success d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="text-light">إضافة تخصص جديد</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    {{ form.as_p }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-success">إضافة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Speciality Modal -->
+<div class="modal fade" id="editSpecialityModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editSpecialityForm" method="POST">
+                {% csrf_token %}
+                <div class="modal-header bg-primary d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="text-light">تعديل التخصص</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editSpecialityId" name="id">
+                    <div class="form-group">
+                        <label for="editSpecialityName">اسم التخصص</label>
+                        <input type="text" id="editSpecialityName" name="name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="editSpecialityNameEn">اسم التخصص بالفرنسية</label>
+                        <input type="text" id="editSpecialityNameEn" name="name_en" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="editSpecialityFiliere">الشعبة</label>
+                        <select id="editSpecialityFiliere" name="filiere" class="form-control">
+                            {% for filiere in filieres %}
+                            <option value="{{ filiere.id }}">{{ filiere.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-primary">تحديث</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Speciality Modal -->
+<div class="modal fade" id="deleteSpecialityModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="deleteSpecialityForm" method="POST">
+                {% csrf_token %}
+                <div class="modal-header bg-danger d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="text-light">حذف التخصص</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <p>هل أنت متأكد أنك تريد حذف هذا التخصص؟</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-danger">حذف</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

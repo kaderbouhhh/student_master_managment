@@ -1,0 +1,93 @@
+<!-- Add Filiere Modal -->
+<div class="modal fade" id="addFiliereModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="addFiliereForm" method="POST" action="{% url 'filiere_add' %}">
+                {% csrf_token %}
+                <div class="modal-header bg-success d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="text-light">إضافة شعبة جديد</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    {{ form.as_p }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-success">إضافة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Filiere Modal -->
+<div class="modal fade" id="editFiliereModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editFiliereForm" method="POST">
+                {% csrf_token %}
+                <div class="modal-header bg-primary d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="text-light">تعديل الشعبة</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editFiliereId" name="id">
+                    <div class="form-group">
+                        <label for="editFiliereName">اسم الشعبة</label>
+                        <input type="text" id="editFiliereName" name="name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="editFiliereNameEn">الاسم بالفرنسية</label>
+                        <input type="text" id="editFiliereNameEn" name="name_en" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="editFiliereDomain">القسم</label>
+                        <select id="editFiliereDomain" name="domain" class="form-control">
+                            {% for domain in domains %}
+                            <option value="{{ domain.id }}">{{ domain.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-primary">تحديث</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Filiere Modal -->
+<div class="modal fade" id="deleteFiliereModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="deleteFiliereForm" method="POST">
+                {% csrf_token %}
+                <div class="modal-header bg-danger d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="text-light">حذف الشعبة</h5>
+                    </div>
+                </div>
+                <div class="modal-body text-right">
+                    <p>هل أنت متأكد أنك تريد حذف هذا الفرع؟</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-danger">حذف</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

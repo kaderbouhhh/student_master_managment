@@ -1,0 +1,152 @@
+<!-- ✅ Add Student Contract Modal -->
+<div class="modal fade" id="addStudentContratModal" tabindex="-1" role="dialog" aria-labelledby="addStudentContratModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="addStudentContratForm" method="POST" action="{% url 'student_contrat_add' %}">
+                {% csrf_token %}
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title text-center flex-grow-1" id="addStudentContratModalLabel">إضافة طالب جديد</h5>
+                    <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ form.as_p }} <!-- Ensure the form is correctly rendered -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-success">إضافة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ✅ Edit Student Contract Modal -->
+<div class="modal fade" id="editStudentContratModal" tabindex="-1" aria-labelledby="editStudentContratModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editStudentContratForm" method="POST">
+                {% csrf_token %}
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title text-center flex-grow-1" id="editStudentContratModalLabel">تعديل بيانات الطالب</h5>
+                    <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editStudentContratId" name="id">
+
+                    <div class="form-group">
+                        <label for="editStudentContratFirstName">الاسم الأول</label>
+                        <input type="text" id="editStudentContratFirstName" name="first_name" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editStudentContratLastName">اللقب</label>
+                        <input type="text" id="editStudentContratLastName" name="last_name" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editStudentContratFirstNameEn">الاسم بالحروف اللاتينية</label>
+                        <input type="text" id="editStudentContratFirstNameEn" name="first_name_en" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editStudentContratLastNameEn">اللقب بالحروف اللاتينية</label>
+                        <input type="text" id="editStudentContratLastNameEn" name="last_name_en" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editStudentContratBirthDay">تاريخ الميلاد</label>
+                        <input type="date" id="editStudentContratBirthDay" name="birth_day" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editStudentContratBirthPlace">مكان الميلاد</label>
+                        <input type="text" id="editStudentContratBirthPlace" name="birth_place" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editStudentContratBirthWilaya">ولاية الميلاد</label>
+                        <input type="text" id="editStudentContratBirthWilaya" name="birth_wilaya" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editStudentContratLiveWilaya">ولاية الإقامة</label>
+                        <input type="text" id="editStudentContratLiveWilaya" name="live_wilaya" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editStudentContratEmail">البريد الإلكتروني</label>
+                        <input type="email" id="editStudentContratEmail" name="email" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editStudentContratAddress">العنوان</label>
+                        <input type="text" id="editStudentContratAddress" name="address" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editStudentContratBranch">التخصص</label>
+                        <select id="editStudentContratBranch" name="branch" class="form-control">
+                            <option value="رياضيات">رياضيات</option>
+                            <option value="فيزياء">فيزياء</option>
+                            <option value="إعلام ألي">إعلام ألي</option>
+                            <option value="علوم طبيعية">علوم طبيعية</option>
+                            <option value="موسيقى">موسيقى</option>
+                        </select>   
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editStudentContratCategory">الرتبة</label>
+                        <select id="editStudentContratCategory" name="category" class="form-control">
+                            <option value="أستاذ التعليم المتوسط">أستاذ التعليم المتوسط</option>
+                            <option value="أستاذ التعليم الثانوي">أستاذ التعليم الثانوي</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editStudentContratSexe">الجنس</label>
+                        <select id="editStudentContratSexe" name="sexe" class="form-control">
+                            <option value="ذكر">ذكر</option>
+                            <option value="أنثى">أنثى</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editStudentContratAcademicYear">السنة الأكاديمية</label>
+                        {{ form.academic_year }}
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-warning">تحديث</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ✅ Delete Student Contract Modal -->
+<div class="modal fade" id="deleteStudentContratModal" tabindex="-1" role="dialog" aria-labelledby="deleteStudentContratModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="deleteStudentContratForm" method="POST">
+                {% csrf_token %}
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title text-center flex-grow-1" id="deleteStudentContratModalLabel">حذف الطالب</h5>
+                    <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>هل أنت متأكد أنك تريد حذف هذا الطالب؟</p>
+                    <input type="hidden" id="deleteStudentContratId" name="id">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-danger">حذف</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,129 @@
+/* External CSS for your web page */
+
+body {
+    font-family: "Rubik", sans-serif;
+    margin-top: 86px; /* Adjust based on your navbar height */
+}
+
+.input_list {
+    box-shadow: 1px 1px 2px #438776;
+    margin: 0px;
+}
+
+.col select,
+.col button {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.checkgroup {
+    text-align: right !important;
+}
+
+.navbar-brand {
+    font-family: "Gulzar", serif;
+    font-weight: 900;
+    font-size: 36px;
+    font-style: normal;
+    color: #992111 !important;
+}
+
+.nav-item {
+    border-right: 1px solid #667878;
+    margin-left: 5px;
+}
+
+.nav-item:hover {
+    background-color: #431276; /* Background on hover */
+    border-radius: 4px;
+}
+
+table thead th,
+table tbody td {
+    font-size: 0.9rem;
+}
+
+.nav-item .nav-link:hover {
+    color: #fff !important;
+    font-weight: bold;
+}
+
+label {
+    display: block; /* Ensures labels take full width */
+    text-align: right;
+    direction: rtl; /* Sets the text direction */
+}
+
+.dataTables_filter input {
+    border-radius: 50px; /* Makes the input rounded */
+    padding: 10px;
+    border: 1px solid #ced4da;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.dataTables_filter input:focus {
+    border-color: #80bdff; /* Change border color on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Shadow on focus */
+}
+
+.main_container {
+    min-height: calc(100vh - 150px); /* Adjust based on your navbar and footer heights */
+    padding: 20px;
+}
+
+:root {
+    --bs-primary: #438776; /* Primary color */
+}
+
+.btn-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.navbar-nav .nav-item .nav-link {
+    color: var(--bs-primary);
+    background-color: transparent;
+}
+
+.nav-item .nav-link:hover,
+.nav-item .nav-link.active {
+    color: white !important;
+    background-color: var(--bs-primary) !important;
+    font-weight: bold;
+}
+
+.clickable-row:hover {
+    cursor: pointer;
+    background-color: #438776 !important;
+    color: #fff;
+}
+
+/* Footer */
+footer.footer {
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        text-align: center;
+    }
+
+    .navbar-brand {
+        font-size: 20px;
+    }
+
+    .navbar-nav {
+        text-align: center;
+    }
+
+    .navbar-nav .nav-item {
+        margin-left: 0;
+        border-right: none;
+        margin-bottom: 10px;
+    }
+
+    .main_container {
+        padding: 15px;
+    }
+}

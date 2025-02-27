@@ -1,0 +1,133 @@
+{% extends 'attendance/dashboard.html' %}
+
+{% block dashboard_content %}
+
+
+<div class="container-fluid my-3">
+   
+    <div class="row g-4 mb-2 pb-5 d-flex justify-content-between" style="border-bottom: 2px solid #bcd;">
+
+        <!-- Absences Card -->
+        <div class="col-md-6">
+            <div class="card text-center card_asd shadow-sm border-0" style="background-color:rgba(200, 210, 250, 0.2); border-radius: 10px;">
+                <div class="card-body">
+                    <div class="mb-3">
+                            <i class="fas fa-user-graduate fa-3x text-primary"></i>
+                    </div>
+                    <h3 class="card-title text-light">الطلبة</h3>
+                    <p class="card-text text-muted">إدارة الطلبة وإدخال معلوماتهم.</p>
+                    <a href="{% url 'student_list' %}" class="btn btn-primary">عرض قائمة الطلبة</a>
+                </div>
+            </div>
+        </div>
+            <!-- Schedule Card -->
+            <div class="col-md-6">
+                <div class="card text-center card_asd shadow-sm border-0" style="background-color:rgba(200, 210, 250, 0.2); border-radius: 10px;">
+                    <div class="card-body">
+                        <div class="mb-3">
+                                <i class="fas fa-pencil-alt fa-3x text-primary"></i>
+                        </div>
+                        <h3 class="card-title text-light">التسجيلات</h3>
+                        <p class="card-text text-muted">إدارة التسجيلات وإصدار الشهادات المدرسية.</p>
+                        <a href="{% url 'enrollment_list' %}" class="btn btn-primary">عرض قائمة التسجيلات</a>
+                    </div>
+                </div>
+            </div>
+           
+    </div>  
+    
+    <div class="row g-4 mb-2 py-5 d-flex justify-content-between"  style="border-bottom: 2px solid #bcd;">
+
+        <!-- Schedule Card -->
+        <div class="col-md-4">
+            <div class="card text-center card_asd shadow-sm border-0" style="background-color:rgba(200, 210, 250, 0.2); border-radius: 10px;">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="fas fa-scroll fa-3x text-primary"></i>
+                    </div>
+                    <h3 class="card-title text-light">العلامات</h3>
+                    <p class="card-text text-muted">إدخال و إدارة العلامات.</p>
+                    <a href="{% url 'grade_list' %}" class="btn btn-primary">عرض علامات الطلبة</a>
+                </div>
+            </div>
+        </div>
+       
+          <!-- Absences Card -->
+          <div class="col-md-4">
+            <div class="card text-center card_asd shadow-sm border-0" style="background-color:rgba(200, 210, 250, 0.2); border-radius: 10px;">
+                <div class="card-body">
+                    <div class="mb-3">
+                            <i class="fas fa-book fa-3x text-primary"></i>
+                    </div>
+                    <h3 class="card-title text-light">المذكرات</h3>
+                    <p class="card-text text-muted">إدارة مذكرات الطلبة.</p>
+                    <a href="{% url 'memoire_list' %}" class="btn btn-primary">عرض قائمة المذكرات</a>
+                </div>
+            </div>
+        </div>
+     
+        <!-- Absences Card -->
+        <div class="col-md-4">
+            <div class="card text-center card_asd shadow-sm border-0" style="background-color:rgba(200, 210, 250, 0.2); border-radius: 10px;">
+                <div class="card-body">
+                    <div class="mb-3">
+                            <i class="fas fa-gavel fa-3x text-primary"></i>
+                    </div>
+                    <h3 class="card-title text-light">المداولات</h3>
+                    <p class="card-text text-muted">إدارة المداولات و إصدار كشوف النقاط و الشهادات.</p>
+                    <a href="{% url 'deliberation_list' %}" class="btn btn-primary">عرض قائمة المداولات</a>
+                </div>
+            </div>
+        </div>     
+    </div>
+
+    <div class="row g-4 mb-2 pt-5 d-flex justify-content-between">
+
+        <!-- Schedule Card -->
+        <div class="col-md-4">
+            <div class="card text-center card_asd shadow-sm border-0" style="background-color:rgba(200, 210, 250, 0.2); border-radius: 10px;">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="fas fa-globe fa-3x text-primary"></i>
+                    </div>
+                    <h3 class="card-title text-light">الميادين</h3>
+                    <p class="card-text text-muted">إدارة ميادين التكوين.</p>
+                    <a href="{% url 'domain_list' %}" class="btn btn-primary">عرض قائمة الميادين</a>
+                </div>
+            </div>
+        </div>
+       
+          <!-- Absences Card -->
+          <div class="col-md-4">
+            <div class="card text-center card_asd shadow-sm border-0" style="background-color:rgba(200, 210, 250, 0.2); border-radius: 10px;">
+                <div class="card-body">
+                    <div class="mb-3">
+                            <i class="fas fa-stream fa-3x text-primary"></i>
+                    </div>
+                    <h3 class="card-title text-light">الفروع</h3>
+                    <p class="card-text text-muted">إدارة فروع كل ميدان.</p>
+                    <a href="{% url 'filiere_list' %}" class="btn btn-primary">عرض قائمة الفروع</a>
+                </div>
+            </div>
+        </div>
+     
+        <!-- Absences Card -->
+        <div class="col-md-4">
+            <div class="card text-center card_asd shadow-sm border-0" style="background-color:rgba(200, 210, 250, 0.2); border-radius: 10px;">
+                <div class="card-body">
+                    <div class="mb-3">
+                            <i class="fas fa-briefcase fa-3x text-primary"></i>
+                    </div>
+                    <h3 class="card-title text-light">التخصصات</h3>
+                    <p class="card-text text-muted">إدارة تخصصات كل فرع.</p>
+                    <a href="{% url 'speciality_list' %}" class="btn btn-primary">عرض قائمة التخصصات</a>
+                </div>
+            </div>
+        </div>     
+    </div>
+
+</div>
+
+
+
+{% endblock %}

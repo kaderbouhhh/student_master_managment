@@ -1,0 +1,141 @@
+<div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="addStudentForm" method="POST" action="{% url 'student_add' %}">
+                {% csrf_token %}
+                <div class="modal-header d-flex justify-content-between bg-success">
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                        <span>&times;</span>
+                    </button>
+                    <h5 class="modal-title flex-grow-1 text-center" id="addStudentModalLabel">إضافة طالب جديد</h5>
+                   
+                </div>
+                <div class="modal-body">
+                    {{ form.as_p }} <!-- Ensure that all fields are rendered with labels -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-success">إضافة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Student Modal -->
+<div class="modal fade" id="editStudentModal" tabindex="-1" aria-labelledby="editStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editStudentForm" method="POST">
+                {% csrf_token %}
+
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                <div class="modal-header d-flex justify-content-between bg-warning">
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                        <span>&times;</span>
+                    </button>
+                    <h5 class="modal-title flex-grow-1 text-center" id="editStudentModalLabel">تعديل طالب</h5>
+                   
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editStudentId" name="id">
+                   
+                    <!-- First Name -->
+                    <div class="form-group mb-2">
+                        <label for="editStudentFirstName" style="font-size:18px; font-weight:bold;">الاسم الأول</label>
+                        <input type="text" id="editStudentFirstName" name="first_name" class="form-control">
+                    </div>
+                    
+                    <!-- Last Name -->
+                    <div class="form-group mb-2">
+                        <label for="editStudentLastName" style="font-size:18px; font-weight:bold;">اسم العائلة</label>
+                        <input type="text" id="editStudentLastName" name="last_name" class="form-control">
+                    </div>
+                    
+                    <!-- First Name (Latin) -->
+                    <div class="form-group mb-2">
+                        <label for="editStudentFirstNamen" style="font-size:18px; font-weight:bold;">الاسم بالحروف اللاتينية</label>
+                        <input type="text" id="editStudentFirstNamen" name="first_name_en" class="form-control">
+                    </div>
+                    
+                    <!-- Last Name (Latin) -->
+                    <div class="form-group mb-2">
+                        <label for="editStudentLastNamen" style="font-size:18px; font-weight:bold;">اللقب بالحروف اللاتينية</label>
+                        <input type="text" id="editStudentLastNamen" name="last_name_en" class="form-control">
+                    </div>
+                    
+                    <!-- Birth Date -->
+                    <div class="form-group mb-2">
+                        <label for="editStudentBirthDay" style="font-size:18px; font-weight:bold;">تاريخ الميلاد</label>
+                        <input type="date" id="editStudentBirthDay" name="birth_day" class="form-control">
+                    </div>
+                    
+                    <!-- Birth Place -->
+                    <div class="form-group mb-2">
+                        <label for="editStudentBirthPlace" style="font-size:18px; font-weight:bold;">مكان الميلاد</label>
+                        <input type="text" id="editStudentBirthPlace" name="birth_place" class="form-control">
+                    </div>
+                    
+                    <!-- Birth Place (Latin) -->
+                    <div class="form-group mb-2">
+                        <label for="editStudentBirthPlacen" style="font-size:18px; font-weight:bold;">مكان الميلاد بالحروف اللاتينية</label>
+                        <input type="text" id="editStudentBirthPlacen" name="birth_place_en" class="form-control">
+                    </div>
+                    
+                    <!-- Wilaya -->
+                    <div class="form-group mb-2">
+                        <label for="editStudentBirthWilaya" style="font-size:18px; font-weight:bold;">الولاية</label>
+                        <input type="text" id="editStudentBirthWilaya" name="birth_wilaya" class="form-control">
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="editStudentBirthWilayan" style="font-size:18px; font-weight:bold;">الولاية</label>
+                        <input type="text" id="editStudentBirthWilayan" name="birth_wilaya_en" class="form-control">
+                    </div>
+                    
+                    <!-- Email -->
+                    <div class="form-group mb-2">
+                        <label for="editStudentEmail" style="font-size:18px; font-weight:bold;">البريد الإلكتروني</label>
+                        <input type="email" id="editStudentEmail" name="email" class="form-control">
+                    </div>
+                    
+                    <!-- Group -->
+                    <div class="form-group mb-2">
+                        <label for="editStudentExEntreprise" style="font-size:18px; font-weight:bold;">مؤسسة التكوين السابقة</label>
+                        <input type="text" id="editStudentExEntreprise" name="ex_entreprise" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-warning">تحديث</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Student Modal -->
+<div class="modal fade" id="deleteStudentModal" tabindex="-1" role="dialog" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="deleteStudentForm" method="POST" action="">
+                {% csrf_token %}
+                <div class="modal-header bg-danger d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-dark" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="text-light">حذف الطالب</h5>
+                    </div>
+                </div>
+                <div class="modal-body text-right">
+                    <p>هل أنت متأكد أنك تريد حذف هذا الطالب ؟</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-danger">حذف</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,164 @@
+<!-- Add Enrollment Modal -->
+<div class="modal fade" id="addDeliberationModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="addDeliberationForm" method="POST" action="{% url 'deliberation_add' %}">
+                {% csrf_token %}
+                <div class="modal-header bg-success d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="text-light">إضافة مداولة جديدة</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    {{ form.as_p }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-success">إضافة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Deliberation Modal -->
+<div class="modal fade" id="editDeliberationModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editDeliberationForm" method="POST">
+                {% csrf_token %}
+                <div class="modal-header bg-warning d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="text-light">تعديل المداولة</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <!-- Hidden field for deliberation ID -->
+                    <input type="hidden" id="editDeliberationId" name="id">
+
+                    <!-- Speciality -->
+                    <div class="form-group">
+                        <label for="editDeliberationSpeciality">التخصص</label>
+                        <select class="form-control" dir="rtl" id="editDeliberationSpeciality" name="speciality">
+                            {% for speciality in specialities %}
+                                <option value="{{ speciality.id }}">{{ speciality.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Student -->
+                    <div class="form-group">
+                        <label for="editDeliberationStudent">الطالب</label>
+                        <select class="form-control" dir="rtl" id="editDeliberationStudent" name="student">
+                            {% for student in students %}
+                                <option value="{{ student.id }}">{{ student }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Pedagogic Year -->
+                    <div class="form-group">
+                        <label for="editDeliberationPedagogicYear">السنة البيداغوجية</label>
+                        <select class="form-control" dir="rtl" id="editDeliberationPedagogicYear" name="pedagogic_year">
+                            {% for pedagogicyear in pedagogic_years %}
+                                <option value="{{ pedagogicyear.id }}">{{ pedagogicyear.year_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Average Grade -->
+                    <div class="form-group">
+                        <label for="editDeliberationAverageGrade">المعدل</label>
+                        <input type="number" class="form-control" dir="rtl" id="editDeliberationAverageGrade" name="average_grade">
+                    </div>
+
+                    <!-- Total Credits -->
+                    <div class="form-group">
+                        <label for="editDeliberationTotalCredits">الأرصدة</label>
+                        <input type="number" class="form-control" dir="rtl" id="editDeliberationTotalCredits" name="total_credits">
+                    </div>
+
+                    <!-- Result Status -->
+                    <div class="form-group">
+                        <label for="editDeliberationResultStatus">قرار اللجنة</label>
+                        <select class="form-control" dir="rtl" id="editDeliberationResultStatus" name="result_status">
+                            <option value="ناجح">ناجح</option>
+                            <option value="معيد">معيد</option>
+                            <option value="منقطع">منقطع</option>
+                        </select>
+                    </div>
+
+                    <!-- Decision Date -->
+                    <div class="form-group">
+                        <label for="editDeliberationDecisionDate">تاريخ المداولات</label>
+                        <input type="date" class="form-control" dir="rtl" id="editDeliberationDecisionDate" name="decision_date">
+                    </div>
+
+                    <!-- Mention -->
+                    <div class="form-group">
+                        <label for="editDeliberationMention">التقدير</label>
+                        <select class="form-control" dir="rtl" id="editDeliberationMention" name="mention">
+                            <option value="/">/</option>
+                            <option value="مقبول">مقبول</option>
+                            <option value="قريب من الجيد">قريب من الجيد</option>
+                            <option value="جيد">جيد</option>
+                            <option value="جيد جدا">جيد جدا</option>
+                            <option value="ممتاز">ممتاز</option>
+                        </select>
+                    </div>
+
+                    <!-- Diploma Number -->
+                    <div class="form-group">
+                        <label for="editDeliberationDiplomaNumber">رقم الشهادة</label>
+                        <input type="number" class="form-control" dir="rtl" id="editDeliberationDiplomaNumber" name="diploma_number">
+                    </div>
+
+                    <!-- Academic Year -->
+                    <div class="form-group">
+                        <label for="editDeliberationAcademicYear">السنة الأكاديمية</label>
+                        <select class="form-control" dir="rtl" id="editDeliberationAcademicYear" name="academic_year">
+                            {% for academic_year in academic_years %}
+                                <option value="{{ academic_year }}">{{ academic_year }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-warning">تحديث</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Delete Enrollment Modal -->
+<div class="modal fade" id="deleteDeliberationModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="deleteDeliberationForm" method="POST">
+                {% csrf_token %}
+                <div class="modal-header bg-danger d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-dark" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="text-light">حذف المداولة</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <p>هل أنت متأكد أنك تريد حذف هذه المداولة؟</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-danger">حذف</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

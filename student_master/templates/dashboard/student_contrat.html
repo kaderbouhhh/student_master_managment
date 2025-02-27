@@ -1,0 +1,307 @@
+{% extends 'attendance/dashboard.html' %}
+
+{% block dashboard_content %}
+<div class="d-flex justify-content-between align-items-center p-3 mb-5 mt-1 border-bottom">
+    <h3>إدارة عقود الطــلاب</h3>
+    <div class="d-flex justify-content-start">
+        <button type="button" class="btn btn-success dash_butt" data-toggle="modal" data-target="#addStudentContratModal">
+            <i class="fas fa-plus"></i> إضافة طالب جديد
+        </button>
+        <button type="button" class="btn btn-primary dash_butt me-1" data-toggle="modal" data-target="#importCSVModal">
+            <i class="fas fa-file-import"></i> استيراد من CSV
+        </button>
+    </div>
+</div>
+
+<div class="table-responsive" style="font-size: 0.8rem;">
+    <table id="contratTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+        <thead>
+            <tr class="bg-dark text-light text-center">
+                <th class="text-center text-light">الاسم</th>
+                <th class="text-center text-light">اللقب</th>
+                <th class="text-center text-light">البريد الإلكتروني</th>
+                <th class="text-center text-light">تاريخ الميلاد</th>
+                <th class="text-center text-light">مكان الميلاد</th>
+                <th class="text-center text-light">الولاية</th>
+                <th class="text-right text-light">
+                    <input type="checkbox" id="checkAll" style="margin: 0 23px 0 0;"> <!-- Check All Checkbox --> 
+                    <button id="sendEmailBtn" class="btn btn-primary tex-left py-1">
+                       <i class="fa fa-envelope"></i> إرسال العقود بالبريد الإلكتروني
+                    </button>
+                </th>
+            </tr>
+        </thead>
+        <tbody id="contratTableBody">
+            {% for contrat in contrats %}
+                {% include 'dashboard/partials/student_contrat_row.html' %}
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center">لا توجد بيانات</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Button to Send Emails -->
+
+</div>
+
+
+{% include 'dashboard/modals/student_contrat_modals.html' %}
+
+<!-- Modal for CSV Upload -->
+<div class="modal fade" id="importCSVModal" tabindex="-1" role="dialog" aria-labelledby="importCSVModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="importCSVForm" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">استيراد ملف CSV</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <input type="file" name="csv_file" id="csv_file" accept=".csv, .xlsx" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-primary">رفع الملف</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        let contratTable = $('#contratTable').DataTable({
+            responsive: true,
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.13.5/i18n/ar.json",
+            },
+        });
+
+        function refreshContratList() {
+            $.ajax({
+                url: "{% url 'student_contrat_list' %}",
+                type: "GET",
+                success: function (response) {
+                    $('#contratTableBody').html($(response).find('#contratTableBody').html());
+                    contratTable.destroy();
+                    contratTable = $('#contratTable').DataTable({
+                        responsive: true,
+                        language: {
+                            url: "https://cdn.datatables.net/plug-ins/1.13.5/i18n/ar.json",
+                        },
+                    });
+                },
+                error: function () {
+                    alert("خطأ أثناء تحديث قائمة العقود.");
+                },
+            });
+        }
+
+    // Add Student Contract
+    $("#addStudentContratForm").on("submit", function (e) {
+        e.preventDefault();
+        let form = $(this);
+        let submitButton = form.find("button[type='submit']");
+        submitButton.prop("disabled", true);
+
+        $.ajax({
+            type: "POST",
+            url: form.attr("action"),
+            data: form.serialize(),
+            success: function (response) {
+                if (response.status === "success") {
+                    $("#addStudentContratModal").modal("hide");
+                    $("#contratTableBody").append(response.new_contrat_row);
+                    form[0].reset();
+                } else {
+                    alert("خطأ في إضافة العقد.");
+                }
+            },
+            error: function (response) {
+                console.error("خطأ أثناء الإضافة:", response);
+            },
+            complete: function () {
+                submitButton.prop("disabled", false);
+            }
+        });
+    });
+   
+       
+  // ✅ Show Edit Modal and Load Data
+$("#editStudentContratModal").on("show.bs.modal", function (event) {
+    let button = $(event.relatedTarget);
+    let contratId = button.data("id");  
+    let form = $("#editStudentContratForm");
+
+    form.attr("action", `/contrats/edit/${contratId}/`);  // ✅ Correct URL
+    form.find("#editStudentContratId").val(contratId);
+
+    // ✅ Populate Fields
+    form.find("#editStudentContratFirstName").val(button.data("first-name"));
+    form.find("#editStudentContratLastName").val(button.data("last-name"));
+    form.find("#editStudentContratFirstNameEn").val(button.data("first-name-en"));
+    form.find("#editStudentContratLastNameEn").val(button.data("last-name-en"));
+    form.find("#editStudentContratBirthDay").val(button.data("birth-day"));
+    form.find("#editStudentContratBirthPlace").val(button.data("birth-place"));
+    form.find("#editStudentContratBirthWilaya").val(button.data("birth-wilaya"));
+    form.find("#editStudentContratLiveWilaya").val(button.data("live-wilaya"));
+    form.find("#editStudentContratEmail").val(button.data("email"));
+    form.find("#editStudentContratAddress").val(button.data("address"));
+
+    // ✅ Populate Select Fields
+    form.find("#editStudentContratBranch").val(button.data("branch")).change();
+    form.find("#editStudentContratCategory").val(button.data("category")).change();
+    form.find("#editStudentContratSexe").val(button.data("sexe")).change();
+    form.find("#editStudentContratAcademicYear").val(button.data("academic-year")).change();
+});
+
+// ✅ Handle Edit Form Submission
+$("#editStudentContratForm").on("submit", function (e) {
+    e.preventDefault();
+    let form = $(this);
+    let submitButton = form.find("button[type='submit']");
+    submitButton.prop("disabled", true);
+
+    $.ajax({
+        type: "POST",
+        url: form.attr("action"),
+        data: form.serialize(),
+        success: function (response) {
+            if (response.status === "success") {
+                $("#editStudentContratModal").modal("hide");
+                $(`#contrat-${response.contrat_id}`).replaceWith(response.updated_row);
+                alert("تم تحديث العقد بنجاح!");
+            } else {
+                alert("حدث خطأ أثناء التحديث. تأكد من صحة البيانات.");
+                console.error("Validation Errors:", response.errors);  
+            }
+        },
+        error: function (xhr) {
+            console.error("🚨 AJAX Error:", xhr.responseText);
+            alert("خطأ أثناء الاتصال بالخادم.");
+        },
+        complete: function () {
+            submitButton.prop("disabled", false);
+        }
+    });
+});
+
+
+        // ✅ Show Delete Confirmation Modal and Set Action
+        $(document).on("click", ".delete-student-btn", function () {
+            let contratId = $(this).data("id");
+            $("#deleteStudentContratForm").attr("action", `/contrats/delete/${contratId}/`);
+            $("#deleteStudentContratId").val(contratId);
+        });
+    
+        // ✅ Handle Delete Form Submission
+        $("#deleteStudentContratForm").on("submit", function (e) {
+            e.preventDefault();
+            let form = $(this);
+            let csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+    
+            $.ajax({
+                type: "POST",
+                url: form.attr("action"),
+                headers: { "X-CSRFToken": csrfToken },
+                success: function (response) {
+                    if (response.status === "success") {
+                        $("#deleteStudentContratModal").modal("hide");  // Close modal
+                        $(`#contrat-${response.contrat_id}`).fadeOut("slow", function () {
+                            $(this).remove();  // Remove row from table
+                        });
+                        alert("تم حذف العقد بنجاح!");
+                    } else {
+                        alert("خطأ أثناء حذف العقد.");
+                    }
+                },
+                error: function (xhr) {
+                    console.error(xhr.responseText);
+                    alert("خطأ أثناء حذف العقد.");
+                }
+            });
+        });
+    
+        // ✅ Refresh Contracts List After Editing/Deleting
+        function refreshContratList() {
+            $.ajax({
+                url: "{% url 'student_contrat_list' %}",
+                type: "GET",
+                success: function (response) {
+                    $("#contratTableBody").html($(response).find("#contratTableBody").html());
+                },
+                error: function () {
+                    alert("خطأ أثناء تحديث القائمة.");
+                }
+            });
+        }
+    
+        // Check All functionality
+        $("#checkAll").click(function () {
+            $(".contrat-checkbox").prop("checked", this.checked);
+        });
+
+        // Handle Send Email Button Click
+        $("#sendEmailBtn").click(function () {
+            let selectedContracts = [];
+            $(".contrat-checkbox:checked").each(function () {
+                selectedContracts.push($(this).val());
+            });
+
+            if (selectedContracts.length === 0) {
+                alert("يرجى اختيار عقود لإرسالها عبر البريد الإلكتروني.");
+                return;
+            }
+
+            // Send the selected contracts to the server
+            $.ajax({
+                url: "{% url 'send_contracts_email' %}", // Backend view to handle emails
+                type: "POST",
+                data: {
+                    contracts: JSON.stringify(selectedContracts),
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                },
+                success: function (response) {
+                    alert("تم إرسال العقود بنجاح!");
+                },
+                error: function (xhr) {
+                    console.error(xhr.responseText);
+                    alert("حدث خطأ أثناء إرسال العقود.");
+                },
+            });
+        });
+
+        $("#importCSVForm").on("submit", function (e) {
+            e.preventDefault();
+            let formData = new FormData();
+            let fileInput = $("#csv_file")[0].files[0];
+            if (!fileInput) {
+                alert("يرجى اختيار ملف للرفع.");
+                return;
+            }
+
+            formData.append("csv_file", fileInput);
+            formData.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+
+            $.ajax({
+                url: "{% url 'import_student_contrats' %}",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    alert(response.message);
+                    location.reload();  // Reload page to show new data
+                },
+                error: function (xhr) {
+                    console.error(xhr.responseText);
+                    alert("حدث خطأ أثناء استيراد البيانات.");
+                },
+            });
+        });
+        
+    });
+</script>
+
+{% endblock %}

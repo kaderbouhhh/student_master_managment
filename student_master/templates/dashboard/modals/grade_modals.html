@@ -1,0 +1,93 @@
+<!-- Add Grade Modal -->
+<div class="modal fade" id="addGradeModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="addGradeForm" method="POST" action="{% url 'grade_create' %}">
+                {% csrf_token %}
+                <div class="modal-header bg-success d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-danger" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="text-light">إدخال نقاط المواد للطلبة</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="id_speciality">التخصص</label>
+                        {{ form.speciality }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_student">الطالب</label>
+                        {{ form.student }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_subject">المادة</label>
+                        {{ form.subject }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_grade">النقطة</label>
+                        {{ form.grade }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_session">الدورة</label>
+                        {{ form.session }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_academic_year">السنة الأكادمية</label>
+                        {{ form.academic_year }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_pedagogic_year">السنة البيداغوجية</label>
+                        {{ form.pedagogic_year }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-success">إضافة</button>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
+
+<!-- Edit Grade Modal -->
+<div class="modal fade" id="editGradeModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editGradeForm" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">تحديث</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Grade Modal -->
+<div class="modal fade" id="deleteGradeModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="deleteGradeForm" method="POST">
+                {% csrf_token %}
+                <div class="modal-header bg-danger d-flex justify-content-start">
+                    <div class="w-25 text-start">
+                        <button type="button" class="close text-dark" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="w-50 text-center">
+                        <h5 class="text-light">حذف المادة</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <p>هل أنت متأكد أنك تريد حذف هذه المادة؟</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-danger">حذف</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,108 @@
+{% extends 'attendance/dashboard.html' %}
+
+{% block dashboard_content %}
+<div class="d-flex justify-content-between align-items-center p-3 mb-5 mt-1 border-bottom">
+    <h3>إدارة الفــروع</h3>
+    <button type="button" class="btn btn-success ml-2" data-toggle="modal" data-target="#addFiliereModal">
+        <i class="fas fa-plus"></i> إنشاء فرع جديد
+    </button>
+</div>
+
+<table class="table table-bordered mt-4">
+    <thead class="text-right bg-dark">
+        <tr>
+            <td class="text-light fw-bold">الاسم</th>
+            <td class="text-light fw-bold">Nom</th>
+            <td class="text-light fw-bold">الميدان</th>
+            <td class="text-light fw-bold">الإجراءات</th>
+        </tr>
+    </thead>
+    <tbody id="filiereTableBody">
+        {% for filiere in filieres %}
+        {% include 'dashboard/partials/filiere_row.html' %}
+        {% endfor %}
+    </tbody>
+</table>
+{% include 'dashboard/modals/filiere_modals.html' %}
+<script>
+$(document).ready(function () {
+    // CSRF Setup
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+            }
+        }
+    });
+
+    // Create Filiere
+    $('#addFiliereForm').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            success: function (response) {
+                $('#addFiliereModal').modal('hide');
+                $('#filiereTableBody').append(response.new_row);
+            },
+            error: function () {
+                alert("حدث خطأ أثناء إضافة الشعبة.");
+            }
+        });
+    });
+
+    // Edit Filiere
+    $('#editFiliereModal').on('show.bs.modal', function (event) {
+        const button = $(event.relatedTarget);
+        const id = button.data('id');
+        const name = button.data('name');
+        const namen = button.data('namen');
+        const domain = button.data('domain');
+
+        $('#editFiliereName').val(name);
+        $('#editFiliereNameEn').val(namen);
+        $('#editFiliereDomain').val(domain);
+        $('#editFiliereForm').attr('action', '/filieres/edit/' + id + '/');
+    });
+
+    $('#editFiliereForm').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            success: function (response) {
+                $('#editFiliereModal').modal('hide');
+                $('#filiere-' + response.filiere_id).replaceWith(response.updated_row);
+            },
+            error: function () {
+                alert("حدث خطأ أثناء تعديل الشعبة.");
+            }
+        });
+    });
+
+    // Delete Filiere
+    $('#deleteFiliereModal').on('show.bs.modal', function (event) {
+        const button = $(event.relatedTarget);
+        const id = button.data('id');
+        $('#deleteFiliereForm').attr('action', '/filieres/delete/' + id + '/');
+    });
+
+    $('#deleteFiliereForm').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            success: function (response) {
+                $('#deleteFiliereModal').modal('hide');
+                $('#filiere-' + response.filiere_id).remove();
+            },
+            error: function () {
+                alert("حدث خطأ أثناء حذف الشعبة.");
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,37 @@
+<tr id="student-{{ student.id }}">               
+    <td>{{ student.first_name }}</td>
+    <td>{{ student.last_name }}</td> 
+    <td>{{ student.first_name_en }}</td>
+    <td>{{ student.last_name_en }}</td>               
+    <td>{{ student.birth_day }}</td> 
+    <td>{{ student.birth_place }}</td>
+    <td>{{ student.birth_place_en }}</td>  
+    <td>{{ student.birth_wilaya }}</td>          
+    <td>
+        <!-- Edit Button -->
+        <button class="btn btn-transparent btn-sm edit-student-btn text-warning" 
+                data-id="{{ student.id }}" 
+                data-first-name="{{ student.first_name }}" 
+                data-last-name="{{ student.last_name }}"
+                data-first-namen="{{ student.first_name_en }}"
+                data-last-namen="{{ student.last_name_en }}"
+                data-birth-day="{{ student.birth_day|date:'Y-m-d' }}" 
+                data-birth-place="{{ student.birth_place }}"
+                data-birth-placen="{{ student.birth_place_en }}"
+                data-birth-wilaya="{{ student.birth_wilaya }}"
+                data-birth-wilayan="{{ student.birth_wilaya_en }}"
+                data-email="{{ student.email }}"
+                data-ex-entreprise="{{ student.ex_entreprise }}"
+                data-toggle="modal" 
+                data-target="#editStudentModal">
+                <i class="fa fa-edit"></i>
+        </button>
+         <!-- Delete Button -->
+        <button class="btn btn-transparent btn-sm delete-student-btn text-danger" 
+             data-id="{{ student.id }}" 
+             data-toggle="modal" 
+             data-target="#deleteStudentModal">
+             <i class="fa fa-trash"></i>
+        </button>
+    </td>
+</tr>

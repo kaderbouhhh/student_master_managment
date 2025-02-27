@@ -1,0 +1,112 @@
+{% extends 'attendance/main.html' %}
+
+{% block title %}لوحة التحكم{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="col-md-1 d-md-block pb-5 pt-2 sidebar text-right border-left sidebar-collapsed" style="font-size:0.8rem; background-color:rgba(5, 30, 55, 0.9); border-radius: 0 5px 5px 0;">
+            <a class="nav-link pt-3 mb-5 d-flex justify-content-center border-bottom-1" href="{% url 'home' %}">
+                <i class="fas fa-tachometer-alt fs-2 ps-1" style="color: #aaa;"></i>
+                <span id="navbar-brand" class="navbar-brand text-light mt-2 me-3" href="" style="border-radius: 10px; font-size: 2.2em; color: #aaa !important;">لوحة التحكم</span>
+            </a>
+            <hr class="border border-light">
+            <div class="position-sticky dash_side">
+                <div class="nav flex-column">
+                    <div class="nav-item">
+                        <a class="nav-link" href="{% url 'domain_list' %}">
+                            <i class="fas fa-globe ms-2"></i> <span class="sidebar-text">الميادين</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="nav-link" href="{% url 'filiere_list' %}">
+                            <i class="fas fa-stream ms-2"></i> <span class="sidebar-text">الفروع</span>
+                        </a>
+                    </div>
+                    <div class="nav-item mb-1">
+                        <a class="nav-link" href="{% url 'speciality_list' %}">
+                            <i class="fas fa-briefcase ms-2"></i> <span class="sidebar-text">التخصصات</span>
+                        </a>
+                    </div>
+                    <hr class="border border-light">
+                    <div class="nav-item">
+                        <a class="nav-link" href="{% url 'student_list' %}">
+                            <i class="fas fa-user-graduate ms-2"></i> <span class="sidebar-text">الطلبة</span>
+                        </a>
+                    </div>
+                  
+                    <div class="nav-item mb-1">
+                        <a class="nav-link" href="{% url 'enrollment_list' %}">
+                            <i class="fas fa-pencil-alt ms-2"></i> <span class="sidebar-text">التسجيلات</span>
+                        </a>
+                    </div>
+                    <hr class="border border-light">
+                    
+                    <div class="nav-item">
+                        <a class="nav-link" href="{% url 'unity_list' %}">
+                            <i class="fas fa-box ms-2"></i> <span class="sidebar-text">الوحدات</span>
+                        </a>
+                    </div>
+                    <div class="nav-item mb-1">
+                        <a class="nav-link" href="{% url 'subject_list' %}">
+                            <i class="fas fa-scroll ms-2"></i> <span class="sidebar-text">المواد</span>
+                        </a>
+                    </div>
+                    <hr class="border border-light">
+                   
+                    <div class="nav-item">
+                        <a class="nav-link" href="{% url 'grade_list' %}">
+                            <i class="fas fa-graduation-cap ms-2"></i> <span class="sidebar-text">العلامات</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="nav-link" href="{% url 'memoire_list' %}">
+                            <i class="fas fa-book ms-2"></i> <span class="sidebar-text">المذكرات</span>
+                        </a>
+                    </div>
+                    <div class="nav-item mb-1">
+                        <a class="nav-link" href="{% url 'deliberation_list' %}">
+                            <i class="fas fa-gavel ms-2"></i> <span class="sidebar-text">المداولات</span>
+                        </a>
+                    </div>
+                    <hr class="border border-light">
+                    
+                    <div class="nav-item">
+                        <a class="nav-link" href="{% url 'student_contrat_list' %}">
+                            <i class="fas fa-box ms-2"></i> <span class="sidebar-text">عقود الطلبة</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main content -->
+        <main id="main" class="col-md-11 ms-sm-auto px-4" style="border: 1px solid rgba(5, 30, 55, 0.1); border-radius: 5px 0 0 5px; background-color: #fefefe;">
+            {% block dashboard_content %}
+            <!-- Content specific to each page (e.g., list, add, edit, delete for models) will be injected here -->
+            {% endblock %}
+        </main>
+    </div>
+</div>
+
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const main = document.getElementById('main');
+    const navbar_brand = document.getElementById('navbar-brand');
+
+
+    sidebar.addEventListener('mouseenter', () => {
+        sidebar.classList.remove('sidebar-collapsed');
+        main.classList.add('main-collapsed');
+        navbar_brand.style.display="block"; 
+    });
+
+    sidebar.addEventListener('mouseleave', () => {
+        sidebar.classList.add('sidebar-collapsed');
+        main.classList.remove('main-collapsed');
+        navbar_brand.style.display="none";
+    });
+</script>
+
+{% endblock %}
